@@ -53,18 +53,18 @@ RSpec.describe "currying experiment" do
     names_proc = proc {|collection, a, e| a.merge({e => collection.count(e)})}
 
     curried_names_proc = names_proc.curry[names]
-
-    rap = proc {|collection, proc| collection.inject({}, &proc)}
-    curried = rap.curry
+    curried_hash_injector = proc {|collection, proc| collection.inject({}, &proc)}.curry
 
     it "should allow a proc that does merging" do
-      partial = curried[names]
+      partial = curried_hash_injector[names]
       count_hash = partial[curried_names_proc]
       expect(count_hash).to eq({"Jason"=>2, "Teresa"=>1, "Judah"=>3, "Michelle"=>1, "Allison"=>1})
     end
   end
 
   context "trying to get a different self inside a block" do
+    # Needing to have collection set twice (above example) bugs me. Why shouldn't my names_proc be able to see its original receiver?
+    # So I create a Receiver class, with a collection, hoping I can get that receiver.
     class Receiver
       attr_accessor :collection
 
@@ -79,22 +79,23 @@ RSpec.describe "currying experiment" do
 
     receiver = Receiver.new(collection: ["Jason", "Jason", "Teresa", "Judah", "Michelle", "Judah", "Judah", "Allison"])
 
-    names_proc = proc {|a, e| a.merge({e => self.collection.count(e)})}
-
+    # Here I am hoping I can call "self" and actually have the collection returned to me, but of course I get the Receiver instance.
+    names_proc = proc {|a, e| a.merge({e => self.count(e)})}
+    # Wishful thinking.
     wrapped = receiver.wrapper &names_proc
 
-    curryable = proc {|collection, proc| collection.inject({}, &proc)}
-    curried = curryable.curry
-
+    curried = proc {|collection, proc| collection.inject({}, &proc)}.curry
+    partial = curried[receiver.collection]
+    
     it "mistakenly assigns a to Receiver rather than the injected Hash" do
-      partial = curried[receiver.collection]
       expect { partial[wrapped] }.to raise_error(NoMethodError)
-     #=> undefined method `merge' for #<Receiver:0x000001013811a0>
+      #=> undefined method `merge' for #<Receiver:0x000001013811a0>
     end
   end
 
-  context "for wrapper merges in OO style" do
+  context "a wrapper merge bending OO to be more type-like" do
     module Procs
+      # Treats Procs module as a type class, that any type with a collection attribute may implement.
       def names
         proc {|a, e| a.merge({e => self.collection.count(e)})}
       end
@@ -104,6 +105,7 @@ RSpec.describe "currying experiment" do
     end
 
     class Receiver
+      # So "Receiver" is more like a type than a class.
       include Procs
       attr_accessor :collection
 
