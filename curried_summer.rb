@@ -67,7 +67,7 @@ RSpec.describe "currying experiment" do
   context "for wrapper merges in OO style" do
     module Procs
       def names
-        proc {|collection, a, e| a.merge({e => collection.count(e)})}
+        proc {|a, e| a.merge({e => self.collection.count(e)})}
       end
       def injector
         proc {|collection, proc| collection.inject({}, &proc)}.curry
@@ -81,19 +81,13 @@ RSpec.describe "currying experiment" do
       def initialize(options = {})
         @collection = options[:collection]
       end
-
-      def wrapper proc
-        proc.curry[self.collection]
-      end
     end
     
     receiver = Receiver.new(collection: ["Jason", "Jason", "Teresa", "Judah", "Michelle", "Judah", "Judah", "Allison"])
-    
-    wrapped = receiver.wrapper receiver.names
 
     it "a partial application of collection, that takes a proc" do
       partial = receiver.injector[receiver.collection]
-      count_hash = partial[wrapped]
+      count_hash = partial[receiver.names]
       expect(count_hash).to eq({"Jason"=>2, "Teresa"=>1, "Judah"=>3, "Michelle"=>1, "Allison"=>1})
     end
   end
