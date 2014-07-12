@@ -64,6 +64,35 @@ RSpec.describe "currying experiment" do
     end
   end
 
+  context "trying to get a different self inside a block" do
+    class Receiver
+      attr_accessor :collection
+
+      def initialize(options = {})
+        @collection = options[:collection]
+      end
+
+      def wrapper &block
+        proc { instance_eval &block }
+      end
+    end
+
+    receiver = Receiver.new(collection: ["Jason", "Jason", "Teresa", "Judah", "Michelle", "Judah", "Judah", "Allison"])
+
+    names_proc = proc {|a, e| a.merge({e => self.collection.count(e)})}
+
+    wrapped = receiver.wrapper &names_proc
+
+    curryable = proc {|collection, proc| collection.inject({}, &proc)}
+    curried = curryable.curry
+
+    it "mistakenly assigns a to Receiver rather than the injected Hash" do
+      partial = curried[receiver.collection]
+      expect { partial[wrapped] }.to raise_error(NoMethodError)
+     #=> undefined method `merge' for #<Receiver:0x000001013811a0>
+    end
+  end
+
   context "for wrapper merges in OO style" do
     module Procs
       def names
@@ -82,7 +111,7 @@ RSpec.describe "currying experiment" do
         @collection = options[:collection]
       end
     end
-    
+
     receiver = Receiver.new(collection: ["Jason", "Jason", "Teresa", "Judah", "Michelle", "Judah", "Judah", "Allison"])
 
     it "a partial application of collection, that takes a proc" do
