@@ -1,8 +1,7 @@
 RSpec.describe "currying experiment" do
   context "with single argument function" do
     summer = proc {|sum, n| sum + n}
-    rap = proc {|proc| (1..5).inject 0, &proc}
-    curried = rap.curry
+    curried = proc {|proc| (1..5).inject 0, &proc}.curry
 
     it "should simply return proc result as normal" do
       expect(curried[summer]).to eq(15)
@@ -11,8 +10,7 @@ RSpec.describe "currying experiment" do
 
   context "with partially applicable function" do
     summer = proc {|sum, n| sum + n}
-    rap = proc {|collection, proc| collection.inject 0, &proc}
-    curried = rap.curry
+    curried = proc {|collection, proc| collection.inject 0, &proc}.curry
 
     it "should simply return proc with only one argument" do
       expect(curried[summer]).to be_a_kind_of(Proc)
@@ -59,37 +57,6 @@ RSpec.describe "currying experiment" do
       partial = curried_hash_injector[names]
       count_hash = partial[curried_names_proc]
       expect(count_hash).to eq({"Jason"=>2, "Teresa"=>1, "Judah"=>3, "Michelle"=>1, "Allison"=>1})
-    end
-  end
-
-  context "trying to get a different self inside a block" do
-    # Needing to have collection set twice (above example) bugs me. Why shouldn't my names_proc be able to see its original receiver?
-    # So I create a Receiver class, with a collection, hoping I can get that receiver.
-    class Receiver
-      attr_accessor :collection
-
-      def initialize(options = {})
-        @collection = options[:collection]
-      end
-
-      def wrapper &block
-        proc { instance_eval &block }
-      end
-    end
-
-    receiver = Receiver.new(collection: ["Jason", "Jason", "Teresa", "Judah", "Michelle", "Judah", "Judah", "Allison"])
-
-    # Here I am hoping I can call "self" and actually have the collection returned to me, but of course I get the Receiver instance.
-    names_proc = proc {|a, e| a.merge({e => self.count(e)})}
-    # Wishful thinking.
-    wrapped = receiver.wrapper &names_proc
-
-    curried = proc {|collection, proc| collection.inject({}, &proc)}.curry
-    partial = curried[receiver.collection]
-    
-    it "mistakenly assigns a to Receiver rather than the injected Hash" do
-      expect { partial[wrapped] }.to raise_error(NoMethodError)
-      #=> undefined method `merge' for #<Receiver:0x000001013811a0>
     end
   end
 
