@@ -26,12 +26,12 @@ module Enumerable
   end
 end
 
-class ListMonad < Array
-  def initialize(value)
-    @value = unit(value)
+class ListMonad
+  def initialize(*values)
+    @values = values.each {|v| unit(v)}
   end
   def unwrap
-    @value
+    @values
   end
   # M[M[A]] is equivalent to M[A]
   def unit(e)
@@ -59,15 +59,22 @@ RSpec.describe "monad enumerable experiment" do
   context "ListMonad" do
     context "#unit" do
       it "should return the value of the monad" do
-        list = ListMonad.new([1,2,3,4])
-        expect(list.unit(ListMonad.new([1,2,3,4]))).to eq(ListMonad[1,2,3,4])
+        list = ListMonad.new(1,2,3,4)
+        expect(ListMonad.new(ListMonad.new(1,2,3,4))).to eq(ListMonad.new(1,2,3,4))
+        expect(list.unit(ListMonad.new(1,2,3,4))).to eq(ListMonad.new(1,2,3,4))
       end
     end
     context "#bind" do
       it "should be able to access the value inside the monad" do
         list = ListMonad.new([1,2,3,4])
-        proc = proc {|e| e.keep_if.true? }
-        expect(list.bind(&proc))
+        proc = proc {|e| e.rotate}
+        expect(list.bind(&proc)).to eq([2, 3, 4, 1])
+      end
+      it "should be able to enumerate on a collection value" do
+        list = ListMonad.new([1,2,3,4])
+        sum_up = proc {|a,b,c,d| a + b + c + d }
+        proc = proc {|e| sum_up.call(e)}
+        expect(list.bind(&proc)).to eq([2, 3, 4, 1])
       end
     end
     context "#powerset" do
