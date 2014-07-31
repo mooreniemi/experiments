@@ -26,12 +26,12 @@ module Enumerable
   end
 end
 
-class ListMonad
-  def initialize(*values)
-    @values = values.each {|v| unit(v)}
+class Monad
+  def initialize(value)
+    @value = unit(value)
   end
   def unwrap
-    @values
+    @value
   end
   # M[M[A]] is equivalent to M[A]
   def unit(e)
@@ -45,52 +45,51 @@ class ListMonad
     f.call(@value)
   end
   def powerset
-    self.filterM {|x| ListMonad[true, false]}
+    self.filterM {|x| Monad.new(true, false)}
   end
 end
 
 RSpec.describe "monad enumerable experiment" do
   context "Array is refined with coulder" do
     it "should return every element in an array except the first" do
-      array = [1,2,3,4,5]
-      expect(array.coulder).to eq([2,3,4,5])
+      array = [1, 2, 3, 4, 5]
+      expect(array.coulder).to eq([2, 3, 4, 5])
     end
   end
-  context "ListMonad" do
+  context "Monad" do
     context "#unit" do
       it "should return the value of the monad" do
-        list = ListMonad.new(1,2,3,4)
-        expect(ListMonad.new(ListMonad.new(1,2,3,4))).to eq(ListMonad.new(1,2,3,4))
-        expect(list.unit(ListMonad.new(1,2,3,4))).to eq(ListMonad.new(1,2,3,4))
+        monad = Monad.new([1, 2, 3, 4])
+        expect(monad.unit(Monad.new([1, 2, 3, 4]))).to eq([1, 2, 3, 4])
       end
     end
     context "#bind" do
       it "should be able to access the value inside the monad" do
-        list = ListMonad.new([1,2,3,4])
+        monad = Monad.new([1, 2, 3, 4])
         proc = proc {|e| e.rotate}
-        expect(list.bind(&proc)).to eq([2, 3, 4, 1])
+        expect(monad.bind(&proc)).to eq([2, 3, 4, 1])
       end
       it "should be able to enumerate on a collection value" do
-        list = ListMonad.new([1,2,3,4])
-        sum_up = proc {|a,b,c,d| a + b + c + d }
+        monad = Monad.new([1, 2, 3, 4])
+        sum_up = proc {|a, b, c, d| a + b + c + d }
         proc = proc {|e| sum_up.call(e)}
-        expect(list.bind(&proc)).to eq([2, 3, 4, 1])
+        expect(monad.bind(&proc)).to eq(10)
       end
     end
     context "#powerset" do
       it "should return a set of all possible sets" do
         pending
-        list = ListMonad[1,2,3]
-        expect(list.powerset).to eq([[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []])
+        monad = Monad[1,2,3]
+        expect(monad.powerset).to eq([[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []])
       end
     end
   end
   context "Enumerable is refined with filterM" do
     it "should filter monadic collections" do
       pending
-      list = ListMonad[1,2,3,4,5]
-      proc = proc {|e| ListMonad[e + 1]}
-      expect(list.filterM &proc).to eq([[], [6], [5], [4], [3], [2]])
+      monad = Monad[1,2,3,4,5]
+      proc = proc {|e| Monad[e + 1]}
+      expect(monad.filterM &proc).to eq([[], [6], [5], [4], [3], [2]])
     end
   end
 end
