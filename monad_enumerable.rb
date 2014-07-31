@@ -22,12 +22,7 @@ module Enumerable
   #    ys  <- filterM p xs
   #    return (if flg then x:ys else ys)
   def filterM(&p)
-    return self.class.unit(ListMonad[]) if self.empty?
-    p.call(self.first).bind do |flg|
-      self.coulder.filterM(&p).bind do |ys|
-        self.class.unit(flg ? (ListMonad[self.first] + ys) : ys)
-      end
-    end
+    puts p.inspect
   end
 end
 
@@ -38,15 +33,16 @@ class ListMonad < Array
   def unwrap
     @value
   end
+  # M[M[A]] is equivalent to M[A]
   def unit(e)
     if e.is_a? self.class
       e.unwrap
     else
-      ListMonad[e]
+      e
     end
   end
   def bind(&f)
-    self.inject(ListMonad[]) {|memo, e| memo << f.call(e) ; memo}
+    f.call(@value)
   end
   def powerset
     self.filterM {|x| ListMonad[true, false]}
@@ -63,16 +59,20 @@ RSpec.describe "monad enumerable experiment" do
   context "ListMonad" do
     context "#unit" do
       it "should return the value of the monad" do
-        list = ListMonad.new([true, false])
-        expect(list.unit([true,false])).to eq([true,false])
+        list = ListMonad.new([1,2,3,4])
+        expect(list.unit(ListMonad.new([1,2,3,4]))).to eq(ListMonad[1,2,3,4])
       end
     end
     context "#bind" do
-      it "should" do
+      it "should be able to access the value inside the monad" do
+        list = ListMonad.new([1,2,3,4])
+        proc = proc {|e| e.keep_if.true? }
+        expect(list.bind(&proc))
       end
     end
     context "#powerset" do
       it "should return a set of all possible sets" do
+        pending
         list = ListMonad[1,2,3]
         expect(list.powerset).to eq([[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []])
       end
@@ -80,6 +80,7 @@ RSpec.describe "monad enumerable experiment" do
   end
   context "Enumerable is refined with filterM" do
     it "should filter monadic collections" do
+      pending
       list = ListMonad[1,2,3,4,5]
       proc = proc {|e| ListMonad[e + 1]}
       expect(list.filterM &proc).to eq([[], [6], [5], [4], [3], [2]])
