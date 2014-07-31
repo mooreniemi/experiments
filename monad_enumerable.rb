@@ -6,7 +6,7 @@ require 'pry'
 module ArrayExtensions
   refine Array do
     def coulder
-      self.slice(1,self.length)
+      self.slice(1, self.length)
     end
   end
 end
@@ -69,17 +69,16 @@ RSpec.describe "monad enumerable experiment" do
         proc = proc {|e| e.rotate}
         expect(monad.bind(&proc)).to eq([2, 3, 4, 1])
       end
-      it "should be able to enumerate on a collection value" do
+      it "should be able to map within the bound proc on the collection value" do
         monad = Monad.new([1, 2, 3, 4])
-        sum_up = proc {|a, b, c, d| a + b + c + d }
-        proc = proc {|e| sum_up.call(e)}
-        expect(monad.bind(&proc)).to eq(10)
+        proc = proc {|c| c.map(&:to_s) }
+        expect(monad.bind(&proc)).to eq(["1", "2", "3", "4"])
       end
     end
     context "#powerset" do
       it "should return a set of all possible sets" do
         pending
-        monad = Monad[1,2,3]
+        monad = Monad.new([1,2,3])
         expect(monad.powerset).to eq([[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []])
       end
     end
@@ -87,8 +86,8 @@ RSpec.describe "monad enumerable experiment" do
   context "Enumerable is refined with filterM" do
     it "should filter monadic collections" do
       pending
-      monad = Monad[1,2,3,4,5]
-      proc = proc {|e| Monad[e + 1]}
+      monad = Monad.new([1,2,3,4,5])
+      proc = proc {|e| Monad.new([e + 1])}
       expect(monad.filterM &proc).to eq([[], [6], [5], [4], [3], [2]])
     end
   end
