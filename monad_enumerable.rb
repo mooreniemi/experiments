@@ -1,5 +1,7 @@
 require 'pry'
 # http://mikeburnscoder.wordpress.com/2009/05/30/powerset-in-ruby-using-the-list-monad/
+# https://github.com/pzol/monadic/blob/master/lib/monadic/monad.rb
+# http://www.haskell.org/ghc/docs/latest/html/libraries/base/src/Control-Monad.html#filterM
 
 module ArrayExtensions
   refine Array do
@@ -37,7 +39,7 @@ class ListMonad < Array
     @value
   end
   def unit(e)
-    if e.is_a? self.class 
+    if e.is_a? self.class
       e.unwrap
     else
       ListMonad[e]
@@ -61,7 +63,8 @@ RSpec.describe "monad enumerable experiment" do
   context "ListMonad" do
     context "#unit" do
       it "should return the value of the monad" do
-
+        list = ListMonad.new([true, false])
+        expect(list.unit([true,false])).to eq([true,false])
       end
     end
     context "#bind" do
