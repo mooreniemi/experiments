@@ -22,11 +22,18 @@ module Enumerable
   #    ys  <- filterM p xs
   #    return (if flg then x:ys else ys)
   def filterM(&p)
-    puts p.inspect
+    # collection.filterM (function that takes a and returns monadic boolean?)
+    return [] if self.empty?
+    self.coulder.filterM &p
   end
 end
 
 class Monad
+  #   Instances of 'Monad' should satisfy the following laws:
+  # > return a >>= k  ==  k a
+  # > m >>= return  ==  m
+  # > m >>= (\x -> k x >>= h)  ==  (m >>= k) >>= h
+  include Enumerable
   def initialize(value)
     @value = unit(value)
   end
@@ -34,6 +41,7 @@ class Monad
     @value
   end
   # M[M[A]] is equivalent to M[A]
+  # aka join or return
   def unit(e)
     if e.is_a? self.class
       e.unwrap
@@ -41,11 +49,12 @@ class Monad
       e
     end
   end
+  # aka >>=
   def bind(&f)
     f.call(@value)
   end
   def powerset
-    self.filterM {|x| Monad.new(true, false)}
+    self.filterM {|x| [true,false]}
   end
 end
 
@@ -85,10 +94,9 @@ RSpec.describe "monad enumerable experiment" do
   end
   context "Enumerable is refined with filterM" do
     it "should filter monadic collections" do
-      pending
       monad = Monad.new([1,2,3,4,5])
-      proc = proc {|e| Monad.new([e + 1])}
-      expect(monad.filterM &proc).to eq([[], [6], [5], [4], [3], [2]])
+      proc = proc {|e| [e + 1]}
+      expect(monad.bind).to eq([[], [6], [5], [4], [3], [2]])
     end
   end
 end
