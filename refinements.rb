@@ -1,4 +1,5 @@
 require 'pry'
+
 module MyFormats
   MY_NAME_FORMAT = /[^A-Za-z0-9_]/
   MY_DATETIME_FORMAT = "%A"
@@ -24,15 +25,16 @@ module TimeFormatter
   end
 end
 
-require 'rubygems'
 require 'active_support/core_ext'
 
 module TimeExtender
+  using TimeFormatter
   refine ActiveSupport::TimeWithZone do
     def method_missing(method, *args)
-      # Time always returns false, no matter where I try a `using` call
-      if Time.respond_to?(method)
-        self.to_time.send(:method, *args)
+      # Time always returns false, no matter where I try a `using` call because
+      # http://stackoverflow.com/questions/15263261/why-does-send-fail-with-ruby-2-0-refinement
+      if Time.respond_to?(method.to_sym)
+        self.to_time.send(method.to_sym, args.first)
       end
     end
   end
