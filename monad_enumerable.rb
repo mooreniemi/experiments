@@ -94,6 +94,7 @@ RSpec.describe "monad enumerable experiment" do
   end
   context "Enumerable is refined with filterM" do
     it "should filter monadic collections" do
+      pending
       monad = Monad.new([1,2,3,4,5])
       proc = proc {|e| [e + 1]}
       expect(monad.bind).to eq([[], [6], [5], [4], [3], [2]])

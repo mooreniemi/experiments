@@ -63,6 +63,7 @@ RSpec.describe "time type class refinement experiment" do
   end
   context "for ActiveSupport::TimeWithZone" do
     it "should be able to format string and time" do
+      pending "Refinements are unfinished in Ruby core"
       Time.zone = "Eastern Time (US & Canada)"
       zoned_time = Time.zone.local(2000,"jan",1,20,15,1)
       expect(cat.name("meowth$$$",zoned_time)).to eq("named meowth on Monday")
