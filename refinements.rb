@@ -30,6 +30,7 @@ require 'active_support/core_ext'
 module TimeExtender
   refine ActiveSupport::TimeWithZone do
     def method_missing(method, *args)
+      # Time always returns false, no matter where I try a `using` call
       if Time.respond_to?(method)
         self.to_time.send(:method, *args)
       end
