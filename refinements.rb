@@ -1,3 +1,4 @@
+require 'pry'
 module MyFormats
   MY_NAME_FORMAT = /[^A-Za-z0-9_]/
   MY_DATETIME_FORMAT = "%A"
@@ -46,13 +47,22 @@ class Kitten
   using StringFormatter
 
   def name(string, time)
-    puts "named #{string.format_to_my_name} on " + time.format_to_my_datetime("-06:00")
+    "named #{string.format_to_my_name} on " + time.format_to_my_datetime("-06:00")
   end
 end
 
 RSpec.describe "time type class refinement experiment" do
   let(:cat) { Kitten.new }
-  it "should be able to format string and time" do
-    expect{ cat.name("meowth$$$",Time.now)}.to output("named meowth on Monday\n").to_stdout
+  context "for Time class" do
+    it "should be able to format string and time" do
+      expect(cat.name("meowth$$$",Time.now)).to eq("named meowth on Monday")
+    end
+  end
+  context "for ActiveSupport::TimeWithZone" do
+    it "should be able to format string and time" do
+      Time.zone = "Eastern Time (US & Canada)"
+      zoned_time = Time.zone.local(2000,"jan",1,20,15,1)
+      expect(cat.name("meowth$$$",zoned_time)).to eq("named meowth on Monday")
+    end
   end
 end
