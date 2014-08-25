@@ -4,6 +4,8 @@ module MyFormats
 end
 
 module StringFormatter
+  include MyFormats
+
   refine String do
     def format_to_my_name
       self.gsub(MY_NAME_FORMAT,"")
@@ -21,6 +23,9 @@ module TimeFormatter
   end
 end
 
+require 'rubygems'
+require 'active_support/core_ext'
+
 module TimeExtender
   refine ActiveSupport::TimeWithZone do
     def method_missing(method, *args)
@@ -32,8 +37,22 @@ module TimeExtender
 end
 
 module TimeTypeClass
+  include TimeFormatter
+  include TimeExtender
 end
 
 class Kitten
-  using TimeFormatter
+  using TimeTypeClass
+  using StringFormatter
+
+  def name(string, time)
+    puts "named #{string.format_to_my_name} on " + time.format_to_my_datetime("-06:00")
+  end
+end
+
+RSpec.describe "time type class refinement experiment" do
+  let(:cat) { Kitten.new }
+  it "should be able to format string and time" do
+    expect{ cat.name("meowth$$$",Time.now)}.to output("named meowth on Monday\n").to_stdout
+  end
 end
