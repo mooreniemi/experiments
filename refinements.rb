@@ -1,5 +1,3 @@
-require 'pry'
-
 # Literate-ish programming file.
 
 module MyFormats
