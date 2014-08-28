@@ -42,6 +42,8 @@ module TimeExtender
       if Time.respond_to?(method.to_sym)
         self.to_time.send(method.to_sym, args.first)
       end
+      # even if I remove this indirect method access, Time still won't have TimeFormatter active
+      # even if I put the `using` invocation inside the refine block!
     end
   end
 end
