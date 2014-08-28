@@ -17,7 +17,9 @@ module StringFormatter
   end
 end
 
-module TimeFormatter
+require 'active_support/core_ext'
+
+module TimeTypeClass
   include MyFormats
 
   # this is the base method we want
@@ -26,33 +28,18 @@ module TimeFormatter
       self.getlocal(timezone).strftime(MY_DATETIME_FORMAT)
     end
   end
-end
 
-require 'active_support/core_ext'
-
-module TimeExtender
-  using TimeFormatter
+  # When defining multiple refinements in the same module,
+  # inside a refine block all refinements from the same module
+  # are active when a refined method is called
 
   # in Rails, time is often translated into an ActiveSupport::TimeWithZone object
   refine ActiveSupport::TimeWithZone do
+    puts Time.format_to_my_datetime("-05:00")
     def method_missing(method, *args)
-      # Time cant respond_to? refinements no matter where I try a `using` call because
-      # Kernel methods for reflection are not in Ruby yet
-      # http://stackoverflow.com/questions/15263261/why-does-send-fail-with-ruby-2-0-refinement
-      if Time.respond_to?(method.to_sym)
-        self.to_time.send(method.to_sym, args.first)
-      end
-      # even if I remove this indirect method access, Time still won't have TimeFormatter active
-      # even if I put the `using` invocation inside the refine block!
+      self.to_time.send(method.to_sym, args.first)
     end
   end
-end
-
-module TimeTypeClass
-  # acts as a type class or type constructor for "time-like" objects
-  # bags different modules that encapsulate specific types
-  include TimeFormatter
-  include TimeExtender
 end
 
 class Kitten
@@ -78,8 +65,6 @@ RSpec.describe "time type class refinement experiment" do
 
   context "for ActiveSupport::TimeWithZone" do
     it "should be able to format string and time" do
-      pending "Refinements are unfinished in Ruby core, so no access to Kernel#respond_to?"
-
       Time.zone = "Eastern Time (US & Canada)"
       zoned_time = Time.zone.local(2000,"jan",1,20,15,1)
       expect(cat.name("meowth$$$",zoned_time)).to eq("named meowth on #{weekday}")
