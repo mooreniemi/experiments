@@ -86,6 +86,16 @@ RSpec.describe "tree conversion" do
       expect(Tree.new([{'id' => 1, 'parentid' => 0},{'id'=> 2 ,'parentid' => 1}]).data).to eq([{'id' => 1, 'parentid' => 0,
                                                                                                 'children' => [{'id'=> 2 ,'parentid' =>  1}]}])
     end
+    it "returns parent with 2 children nested" do
+      partial_array = [{'id' => 1, 'parentid' => 0},
+                       {'id'=> 2 ,'parentid' => 1},
+                       {'id' => 3, 'parentid'=> 1}]
+
+      nested_partial_array = [{'id' => 1, 'parentid' => 0,
+                               'children' => [{'id'=> 2 ,'parentid' => 1},
+                                              {'id' => 3, 'parentid'=> 1}]}]
+      expect(Tree.new(partial_array).data).to eq(nested_partial_array)
+    end
   end
 
   context "with full example" do
