@@ -54,6 +54,12 @@ module ArrayToTree
     def to_tree
       return self if self.size <= 1
       parent_ids = self.inject([]) {|a,e| a << e["parentid"] ; a}
+      result = []
+      self.each do |e|
+        children = parent_ids.include?(e['id']) ? self.select{|node| node['parentid'] == e['id']} : []
+        result << e.merge({'children' => children }) unless children.empty?
+      end
+      return result
     end
   end
 end
@@ -77,8 +83,8 @@ RSpec.describe "tree conversion" do
       expect(Tree.new([{'id' => 1, 'parentid' => 0}]).data).to eq([{'id' => 1, 'parentid' => 0}])
     end
     it "returns parent with 1 child nested" do
-      expect(Tree.new([{'id' => 1, 'parentid' => 0},{'id'=> 2 ,'parentid' =>  1}]).data).to eq([{'id' => 1, 'parentid' => 0,
-                                                                                                 'children' => [{'id'=> 2 ,'parentid' =>  1}]}])
+      expect(Tree.new([{'id' => 1, 'parentid' => 0},{'id'=> 2 ,'parentid' => 1}]).data).to eq([{'id' => 1, 'parentid' => 0,
+                                                                                                'children' => [{'id'=> 2 ,'parentid' =>  1}]}])
     end
   end
 
@@ -86,6 +92,7 @@ RSpec.describe "tree conversion" do
     let(:tree) { Tree.new(DataForIO::ARRAY) }
 
     it "returns nested representation of original array" do
+      pending "final implementation"
       expect(tree.data).to eq(DataForIO::NESTED)
     end
   end
