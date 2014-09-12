@@ -1,3 +1,5 @@
+require 'pry'
+
 module DataForIO
   ARRAY = [
     {'id'=> 1 ,'parentid' =>  0},
@@ -50,7 +52,8 @@ end
 module ArrayToTree
   refine Array do
     def to_tree
-      self
+      return self if self.size <= 1
+      parent_ids = self.inject([]) {|a,e| a << e["parentid"] ; a}
     end
   end
 end
@@ -74,9 +77,8 @@ RSpec.describe "tree conversion" do
       expect(Tree.new([{'id' => 1, 'parentid' => 0}]).data).to eq([{'id' => 1, 'parentid' => 0}])
     end
     it "returns parent with 1 child nested" do
-      expect(Tree.new([{'id' => 1, 'parentid' => 0},
-      {'id'=> 2 ,'parentid' =>  1}]).data).to eq([{'id' => 1, 'parentid' => 0,
-                                                   'children' => [{'id'=> 2 ,'parentid' =>  1}]}])
+      expect(Tree.new([{'id' => 1, 'parentid' => 0},{'id'=> 2 ,'parentid' =>  1}]).data).to eq([{'id' => 1, 'parentid' => 0,
+                                                                                                 'children' => [{'id'=> 2 ,'parentid' =>  1}]}])
     end
   end
 
