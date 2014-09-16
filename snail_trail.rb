@@ -11,17 +11,23 @@ class Trailer
 
     until @collection.flatten.empty?
       @slime << right_corner
-      @collection.delete_at(0) # delete top row
-      @collection = @collection.each {|a| a.delete_at((a.length - 1)) } # delete rightmost column
+      clear_right_corner!
       @slime << left_corner
-      @collection.delete_at((@collection.length - 1)) # delete bottom row
-      @collection = @collection.each {|a| a.delete_at((0)) } # delete leftmost column
+      clear_left_corner!
     end
 
     @slime.flatten
   end
 
   private
+  def clear_right_corner!
+    @collection.delete_at(0) # delete top row
+    @collection = @collection.each {|a| a.delete_at((a.length - 1)) } # delete rightmost column
+  end
+  def clear_left_corner!
+    @collection.delete_at((@collection.length - 1)) # delete bottom row
+    @collection = @collection.each {|a| a.delete_at((0)) } # delete leftmost column
+  end
   def right_corner
     first_row[0...-1] + last_column
   end
