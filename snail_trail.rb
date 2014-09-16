@@ -14,7 +14,7 @@ class Trailer
       @collection.delete_at(0) # delete top row
       @collection = @collection.each {|a| a.delete_at((a.length - 1)) } # delete rightmost column
       @slime << left_corner
-      @collection.delete_at((@collection.length - 2)) # delete bottom row
+      @collection.delete_at((@collection.length - 1)) # delete bottom row
       @collection = @collection.each {|a| a.delete_at((0)) } # delete leftmost column
     end
 
