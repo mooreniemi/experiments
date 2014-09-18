@@ -39,5 +39,6 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  minitest
   pry
   rspec
