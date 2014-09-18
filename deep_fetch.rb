@@ -2,13 +2,17 @@ require 'minitest/autorun'
 
 class Hash
   def get_value(default, *args)
-    return default if args.select! {|a| deep(a)}
+    return default if args.empty? || args.select! {|a| deep(a)}
     args.inject(self) {|m,i| m.send(:[],i)}
   end
   def deep(key)
     result = key?(key) ? key : self.values.map {|v| v.deep(key) if v.respond_to?(:key?)}
-    result.reject! {|e| e.nil? || e.empty?} && result.flatten if result.is_a? Array
-    result.is_a?(Array) ? result.first : result
+    if result.is_a?(Array)
+      result.reject! {|e| e.nil? || e.empty?}
+      result.flatten.first
+    else
+      result
+    end
   end
 end
 
