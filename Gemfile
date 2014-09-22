@@ -4,6 +4,7 @@ gem "activesupport"
 
 gem "minitest"
 gem "minitest-colorize"
+gem "minitest-reporters"
 gem "m"
 gem "rspec"
 gem "pry"

@@ -2,29 +2,29 @@ require 'minitest/autorun'
 require 'pry'
 
 def solution(list)
-  first_element = list.first
-  return first_element.to_s if list.size <= 1
-
   ranges = []
+  return ranges << list if list.size <= 2
 
   list.each_cons(2) do |e,i| 
     previous_element = ranges.last
     actual_next = i
     expected_next = e.succ
 
-    # is a valid two range
     if (e..actual_next) == (e..expected_next)
-      # see if its range.begin is the same as the first element's range.end?
       if ranges.empty?
         ranges << (e..actual_next)
-      else
+      elsif ranges.last.is_a? Range
         ranges << merge_ranges(ranges.pop, (e..expected_next))
+      else
+        ranges << (e..expected_next)
       end
-    else # it is just an element
+    else
       ranges << e
     end
   end
-  ranges.map! {|e| format(e.to_s) if e.is_a? Range}
+
+  ranges.map! {|e| format(e) if e.is_a? Range}
+  ranges.reject! {|e| e.nil? || e.empty? }
   ranges.join(",")
 end
 
@@ -32,8 +32,12 @@ def merge_ranges(a,b)
   [a.begin, b.begin].min..[a.end, b.end].max
 end
 
-def format(string)
-  string.gsub("..","-").delete('[]')
+def format(range)
+  if range.to_a.size > 2
+    range.to_s.gsub("..","-").delete('[]')
+  else
+    range.to_s.gsub("..",",").delete('[]')
+  end
 end
 
 class Test < Minitest::Test
