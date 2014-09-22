@@ -2,9 +2,9 @@ require 'minitest/autorun'
 require 'pry'
 
 def solution(list)
-  ranges = []
-  return ranges << list if list.size <= 2
+  return list.join(",") if list.size <= 2
 
+  ranges = []
   list.each_cons(2) do |e,i| 
     previous_element = ranges.last
     actual_next = i
@@ -22,9 +22,9 @@ def solution(list)
       ranges << e
     end
   end
-
-  ranges.map! {|e| format(e) if e.is_a? Range}
-  ranges.reject! {|e| e.nil? || e.empty? }
+  ranges.map! {|e| e.is_a?(Range) ? format(e) : e }
+  puts "ranges #{ranges}"
+  ranges.reject! {|e| e.nil? || e.is_a?(Fixnum)|| e.empty? }
   ranges.join(",")
 end
 
