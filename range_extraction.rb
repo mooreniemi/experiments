@@ -2,48 +2,26 @@ require 'minitest/autorun'
 require 'pry'
 
 def solution(list)
-  return list.join(",") if list.size <= 2
+  return "" if list.empty?
+  
+  list_of_lists = list.inject([]) do |m,e|
+    m << [] if m.empty?
+    m.last.last == (e-1) ? m.last << e : m << [e]
+    m
+  end.reject!(&:empty?)
 
-  ranges = []
-  list.each_cons(2) do |e,i| 
-    previous_element = ranges.last
-    actual_next = i
-    expected_next = e.succ
-
-    if (e..actual_next) == (e..expected_next)
-      if ranges.empty?
-        ranges << (e..actual_next)
-      elsif ranges.last.is_a? Range
-        ranges << merge_ranges(ranges.pop, (e..expected_next))
-      else
-        ranges << (e..expected_next)
-      end
+  list_of_lists.inject([]) do |m,l| 
+    if l.size > 2 
+      m << (l.first.to_s + "-" + l.last.to_s) 
+    elsif l.size == 2
+      m << (l.first.to_s + "," + l.last.to_s) 
     else
-      ranges << e
+      m << l.first.to_s
     end
-  end
-  ranges.map! {|e| e.is_a?(Range) ? format(e) : e }
-  puts "ranges #{ranges}"
-  ranges.reject! {|e| e.nil? || e.is_a?(Fixnum)|| e.empty? }
-  ranges.join(",")
-end
-
-def merge_ranges(a,b)
-  [a.begin, b.begin].min..[a.end, b.end].max
-end
-
-def format(range)
-  if range.to_a.size > 2
-    range.to_s.gsub("..","-").delete('[]')
-  else
-    range.to_s.gsub("..",",").delete('[]')
-  end
+  end.join(",")
 end
 
 class Test < Minitest::Test
-  def test_helper
-    assert_equal (1..6), merge_ranges((1..3),(3..6))
-  end
 
   def test_none
     assert_equal "", solution([])
