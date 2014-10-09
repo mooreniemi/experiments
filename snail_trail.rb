@@ -1,5 +1,10 @@
 require 'pry'
 
+# the one-liner winner is
+# def snail(array)
+#   array.empty? ? [] : array.shift + snail(array.transpose.reverse)
+# end
+
 class Trailer
   def initialize(collection)
     @collection = collection
