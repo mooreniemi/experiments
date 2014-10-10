@@ -37,13 +37,7 @@ RSpec.describe "using custom_reverse and property test" do
       until original_list.empty?
         new_list.push(original_list.pop)
       end
-      #TODO binding.pry
       new_list
-    end
-
-    let (:big_size_arrays) do
-      valid_size_of_array = -> { Rantly { range 0, 50 } }
-      ->(r) { array(valid_size_of_array.call) { integer }}
     end
 
     it "custom reverses unsorted multi-element array" do
@@ -58,10 +52,16 @@ RSpec.describe "using custom_reverse and property test" do
       expect(custom_reverse([])).to eq([])
     end
 
+    let (:big_size_arrays) do
+      valid_size_of_array = -> { Rantly { range 0, 50 } }
+      ->(r) { array(valid_size_of_array.call) { integer }}
+    end
+
     it "the reversed reversal is the same as the original array" do
-      property_of(&big_size_arrays).check(50) { |array|
+      property_of(&big_size_arrays).check(1) { |array|
+        original_array = array.dup
         reversed_array = custom_reverse(array)
-        expect(custom_reverse(reversed_array)).to eq(array)
+        expect(custom_reverse(reversed_array)).to eq(original_array)
       }
     end
   end
