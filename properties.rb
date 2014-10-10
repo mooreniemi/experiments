@@ -36,6 +36,7 @@ RSpec.describe "using custom_reverse and property test" do
   def custom_reverse original_list
     new_list = original_list.inject([]) { |list,e| list.unshift(e) }
   end
+
   context "regular incremental test cases" do
     it "custom reverses unsorted multi-element array" do
       expect(custom_reverse([1,2,3,5,2])).to eq([2,5,3,2,1])
@@ -49,6 +50,7 @@ RSpec.describe "using custom_reverse and property test" do
       expect(custom_reverse([])).to eq([])
     end
   end
+
   context "using Rantly" do
     let (:big_size_arrays) do
       valid_size_of_array = -> { Rantly { range 0, 50 } }
