@@ -34,12 +34,7 @@ end
 
 RSpec.describe "using custom_reverse and property test" do
   def custom_reverse original_list
-    #first, *rest = *many
-    new_list = original_list.empty? ? original_list : [original_list.pop]
-    until original_list.empty?
-      new_list.push(original_list.pop)
-    end
-    new_list
+    new_list = original_list.inject([]) { |list,e| list.unshift(e) }
   end
   context "regular incremental test cases" do
     it "custom reverses unsorted multi-element array" do
