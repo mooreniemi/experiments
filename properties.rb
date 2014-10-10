@@ -1,5 +1,5 @@
 require 'rantly'
-require 'rantly/property'
+require 'rantly/rspec_extensions'
 
 RSpec.describe "general exercise in using a list reversal test via properties" do
   context "regular single case" do

@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/hayeah/rantly
+  revision: db76214c2039bafdf0ffe706513db87a7d076e24
+  specs:
+    rantly (0.3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -30,7 +36,6 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     rake (10.3.2)
-    rantly (0.3.1)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
@@ -59,5 +64,5 @@ DEPENDENCIES
   minitest-colorize
   minitest-reporters
   pry
-  rantly
+  rantly!
   rspec

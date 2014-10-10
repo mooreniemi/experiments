@@ -8,4 +8,4 @@ gem "minitest-reporters"
 gem "m"
 gem "rspec"
 gem "pry"
-gem "rantly"
+gem "rantly", :git => 'https://github.com/hayeah/rantly'
