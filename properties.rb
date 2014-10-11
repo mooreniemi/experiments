@@ -17,7 +17,7 @@ RSpec.describe "general exercise in using a list reversal test via properties" d
     # set up of Rantly generator of random size arrays
     let (:big_size_arrays) do
       valid_size_of_array = -> { Rantly { range 0, 50 } }
-      ->(r) { array(valid_size_of_array.call) { integer }}
+      ->(r) { array(valid_size_of_array.call) { [string,integer] }}
     end
 
     it "the reversed reversal is the same as the original array" do
@@ -30,6 +30,8 @@ RSpec.describe "general exercise in using a list reversal test via properties" d
 end
 
 # http://www.troikatech.com/blog/2014/04/02/property-based-testing-in-ruby/
+# http://jtobin.ca/blog/2014/03/08/property-testing-in-ruby/
+# http://www.lshift.net/blog/2013/03/16/ruby-property-testing-with-rantly/
 # https://github.com/hayeah/rantly
 
 RSpec.describe "using custom_reverse and property test" do
@@ -54,7 +56,7 @@ RSpec.describe "using custom_reverse and property test" do
   context "using Rantly" do
     let (:big_size_arrays) do
       valid_size_of_array = -> { Rantly { range 0, 50 } }
-      ->(r) { array(valid_size_of_array.call) { integer }}
+      ->(r) { array(valid_size_of_array.call) { [string,integer] }}
     end
 
     it "the reversed reversal is the same as the original array" do
