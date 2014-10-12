@@ -49,7 +49,6 @@ module RadixSort
       list_copy
     end
   end
-
 end
 
 RSpec.describe "Radix Sort" do
@@ -74,8 +73,8 @@ RSpec.describe "Radix Sort" do
     expect([100000,-10000,400,23,10000].radix_sort).to eq([-10000,23,400,10000,100000])
   end
 
-  it "is not faster than standard sort :)" do
-    array = Rantly { sized((rand * 20).to_i) { array {integer}} }
+  it "is not faster than standard sort in Ruby :)" do
+    array = Rantly { sized((rand * 2000).to_i) { array {integer}} }
 
     Benchmark.bmbm do |x|
       x.report("radix sort ") { array.dup.radix_sort }
