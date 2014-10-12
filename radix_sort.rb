@@ -1,4 +1,6 @@
 require 'pry'
+require 'rantly'
+require 'benchmark'
 
 module RadixSort
   refine Fixnum do
@@ -68,5 +70,16 @@ RSpec.describe "Radix Sort" do
 
   it "works with negative numbers" do
     expect([170, 45, 75, 90, 2, 24, -802, -66].radix_sort).to eq([-802, -66, 2, 24, 45, 75, 90, 170])
+    expect([170, -300, 45, 75, 90, 2, 24, -802, -66].radix_sort).to eq([-802, -300, -66, 2, 24, 45, 75, 90, 170])
+    expect([100000,-10000,400,23,10000].radix_sort).to eq([-10000,23,400,10000,100000])
+  end
+
+  it "is not faster than standard sort :)" do
+    array = Rantly { sized((rand * 20).to_i) { array {integer}} }
+
+    Benchmark.bmbm do |x|
+      x.report("radix sort ") { array.dup.radix_sort }
+      x.report("sort")  { array.dup.sort  }
+    end
   end
 end
