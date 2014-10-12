@@ -12,7 +12,7 @@ RSpec.describe "Bowling Score Kata" do
     expect(score(all_rolls)).to eq(0)
   end
 
-    it "takes a representation of rolls and returns a score" do
+  it "takes a representation of rolls and returns a score" do
     all_rolls = Array.new(10, [1,9,5])
     expect(score(all_rolls)).to eq(150)
   end
