@@ -4,31 +4,18 @@
 module Breadth
   attr_accessor :distance
   attr_accessor :parent
-
-  def default_breadth_properties
-    @distance = Float::INFINITY
-    @parent = nil
-  end
-end
-
-class Node
-  include Breadth
-
-  attr_accessor :left
-  attr_accessor :right
-  attr_accessor :value
   attr_accessor :as_rows
 
-  def initialize(value: nil, left: nil, right: nil)
-    @value = value
-    @left = left
-    @right = right
-    @as_rows = []
-    default_breadth_properties
+  def as_rows
+    @as_rows ||= []
   end
 
-  def children
-    [left, right]
+  def distance
+    @distance ||= Float::INFINITY
+  end
+
+  def parent
+    @parent ||= nil
   end
 
   def bfs_for(element)
@@ -56,6 +43,29 @@ class Node
 
     visited.include?(element)
   end
+end
+
+module Coordinates
+  attr_accessor :x
+  attr_accessor :y
+
+  def with_coordinates
+  end
+end
+
+class Node
+  include Breadth
+  include Coordinates
+
+  attr_accessor :left
+  attr_accessor :right
+  attr_accessor :value
+
+  def initialize(value: nil, left: nil, right: nil)
+    @value = value
+    @left = left
+    @right = right
+  end
 
   def preorder(current = self)
     puts current.value
@@ -73,5 +83,9 @@ class Node
     puts postorder(current.left) unless current.left.nil?
     puts postorder(current.right) unless current.right.nil?
     puts current.value
+  end
+
+  def children
+    [left, right]
   end
 end
