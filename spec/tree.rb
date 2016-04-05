@@ -19,11 +19,13 @@ class Node
   attr_accessor :left
   attr_accessor :right
   attr_accessor :value
+  attr_accessor :as_rows
 
   def initialize(value: nil, left: nil, right: nil)
     @value = value
     @left = left
     @right = right
+    @as_rows = []
     default_breadth_properties
   end
 
@@ -33,12 +35,16 @@ class Node
 
   def bfs_for(element)
     self.distance = 0
-    queue = [self]
+    root = self
+    queue = [root]
     visited = []
 
     until queue.empty?
       current = queue.shift
-      current.children.each do |node|
+      adjacency_list = current.children
+      root.as_rows << adjacency_list
+
+      adjacency_list.each do |node|
         next if node.nil?
         visited << node.value
 
@@ -106,9 +112,17 @@ describe "Tree" do
     # get max width based on height from bfs
     # pad all rows
 
-    it 'requires BFS' do
-      expect(fb_tree.bfs_for(7)).to be true
-      expect(fb_tree.bfs_for(17)).to be false
+    describe "#bfs_for(element)" do
+      it 'does BFS' do
+        expect(fb_tree.bfs_for(7)).to be true
+        expect(fb_tree.bfs_for(17)).to be false
+      end
+
+      it 'populates rows' do
+        fb_tree.bfs_for(99)
+        rows = fb_tree.as_rows
+        expect(rows).to_not eq([])
+      end
     end
 
     it 'represents trees as levels' do
