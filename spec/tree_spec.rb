@@ -31,7 +31,15 @@ describe "Tree" do
 
   describe "columning" do
     context "using coordinates strategy" do
-
+      describe "#with_coordinates" do
+        let(:root) { Node.new(value: 1) }
+        it 'assigns root [0,0]' do
+          expect(root.with_coordinates.xy).to eq([0,0])
+        end
+        it 'assigns left child [1,1]' do
+          root.left = Node.new(value: 2)
+        end
+      end
     end
 
     context "using padding strategy" do

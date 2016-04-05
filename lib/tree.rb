@@ -48,8 +48,23 @@ end
 module Coordinates
   attr_accessor :x
   attr_accessor :y
+  attr_accessor :xy
+
+  def xy
+    @xy ||= [0,0]
+  end
+
+  def x
+    xy.first
+  end
+
+  def y
+    xy.last
+  end
+
 
   def with_coordinates
+    self
   end
 end
 
