@@ -42,9 +42,9 @@ class Node
     until queue.empty?
       current = queue.shift
       adjacency_list = current.children
-      root.as_rows << adjacency_list
 
       adjacency_list.each do |node|
+        root.as_rows << (node.nil? ? "x" : node.value)
         next if node.nil?
         visited << node.value
 
@@ -119,9 +119,21 @@ describe "Tree" do
       end
 
       it 'populates rows' do
-        fb_tree.bfs_for(99)
-        rows = fb_tree.as_rows
-        expect(rows).to_not eq([])
+        sticky_tree = fb_tree
+        sticky_tree.bfs_for(99)
+        rows = sticky_tree.as_rows
+
+        # TODO need to partition list
+        height = 5
+        puts rows.slice!(0..2**0)
+        puts "\n"
+        (height - 1).times do |n|
+          n += 1
+          puts rows.slice!(0..2**n + 1)
+          puts "\n"
+        end
+
+        expect(rows.uniq.size).to eq(5)
       end
     end
 
