@@ -21,14 +21,14 @@ describe "Tree" do
     it 'outputs values' do
       # [ 9, 5, 2, 7, 3, 1, 6, 4, 8, 0 ]
       expect { fb_tree.inorder {|n| puts "#{n.value}" } }.
-        to output("9\n\n5\n2\n7\n\n\n\n3\n1\n\n\n6\n4\n8\n\n0\n\n\n").to_stdout
+        to output("9\n5\n2\n7\n3\n1\n6\n4\n8\n0\n").to_stdout
     end
   end
   describe "#postorder" do
     it 'outputs values' do
       # [ 9, 7, 2, 5, 1, 3, 8, 0, 4, 6 ]
       expect{ fb_tree.postorder {|n| puts "#{n.value}" } }.
-        to output("9\n\n7\n\n2\n\n5\n\n1\n\n3\n\n8\n\n0\n\n4\n\n6\n").to_stdout
+        to output("9\n7\n2\n5\n1\n3\n8\n0\n4\n6\n").to_stdout
     end
   end
 

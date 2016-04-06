@@ -89,14 +89,14 @@ class Node
   end
 
   def inorder(current = self, &block)
-    puts inorder(current.left, &block) unless current.left.nil?
+    inorder(current.left, &block) unless current.left.nil?
     yield current if block
-    puts inorder(current.right, &block) unless current.right.nil?
+    inorder(current.right, &block) unless current.right.nil?
   end
 
   def postorder(current = self, &block)
-    puts postorder(current.left, &block) unless current.left.nil?
-    puts postorder(current.right, &block) unless current.right.nil?
+    postorder(current.left, &block) unless current.left.nil?
+    postorder(current.right, &block) unless current.right.nil?
     yield current if block
   end
 
