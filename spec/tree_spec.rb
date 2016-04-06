@@ -35,8 +35,14 @@ describe "Tree" do
   describe "#height" do
     it 'or depth' do
       expect(fb_tree.height).to eq(5)
-			expect(Node.new(value: 1).height).to eq(1)
-			expect(Node.new(value: 1, left: Node.new(value: 2)).height).to eq(2)
+      expect(Node.new(value: 1).height).to eq(1)
+      expect(Node.new(value: 1, left: Node.new(value: 2)).height).to eq(2)
+    end
+  end
+
+  describe "#invert" do
+    it 'reverses right and left' do
+			expect(google_tree.invert).to eql(inverted_google_tree)
     end
   end
 

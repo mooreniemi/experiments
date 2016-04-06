@@ -108,6 +108,16 @@ class Node
 		[lh + 1, rh + 1].max
 	end
 
+	def invert(current = self)
+		return current if children.empty?
+		invert(current.left) unless current.left.nil?
+		invert(current.right) unless current.right.nil?
+		l = current.left
+		current.left = current.right
+		current.right = l
+		current
+	end
+
 	def children
 		[left, right]
 	end
