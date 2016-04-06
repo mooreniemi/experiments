@@ -100,6 +100,13 @@ class Node
     yield current if block
   end
 
+  def height(current = self)
+		return 0 if current.nil?
+		lh = height(current.left)
+		rh = height(current.right)
+		[lh + 1, rh + 1].max
+  end
+
   def children
     [left, right]
   end

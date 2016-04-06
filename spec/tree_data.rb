@@ -1,3 +1,15 @@
+# https://www.careercup.com/question?id=5749533368647680
+#Input:
+      #6
+     #/ \
+    #3   4
+   #/ \   \
+  #5   1   0
+ #/ \     /
+#9   2   8
+     #\
+      #7
+
 module TreeData
   def fb_tree
     Node.new(

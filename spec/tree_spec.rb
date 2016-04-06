@@ -32,6 +32,14 @@ describe "Tree" do
     end
   end
 
+  describe "#height" do
+    it 'or depth' do
+      expect(fb_tree.height).to eq(5)
+			expect(Node.new(value: 1).height).to eq(1)
+			expect(Node.new(value: 1, left: Node.new(value: 2)).height).to eq(2)
+    end
+  end
+
   describe "columning" do
     context "using coordinates strategy" do
       describe "#with_coordinates" do
