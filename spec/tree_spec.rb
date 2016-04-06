@@ -13,7 +13,8 @@ describe "Tree" do
   describe "#preorder" do
     it 'outputs values' do
       # [ 6, 3, 5, 9, 2, 7, 1, 4, 0, 8 ]
-      expect{ fb_tree.preorder }.to output("6\n3\n5\n9\n2\n7\n1\n4\n0\n8\n").to_stdout
+      expect{ fb_tree.preorder {|n| puts "#{n.value}" } }.
+        to output("6\n3\n5\n9\n2\n7\n1\n4\n0\n8\n").to_stdout
     end
   end
   describe "#inorder" do
@@ -26,7 +27,7 @@ describe "Tree" do
   describe "#postorder" do
     it 'outputs values' do
       # [ 9, 7, 2, 5, 1, 3, 8, 0, 4, 6 ]
-      expect{ fb_tree.postorder }.
+      expect{ fb_tree.postorder {|n| puts "#{n.value}" } }.
         to output("9\n\n7\n\n2\n\n5\n\n1\n\n3\n\n8\n\n0\n\n4\n\n6\n").to_stdout
     end
   end
@@ -36,11 +37,10 @@ describe "Tree" do
       describe "#with_coordinates" do
         let(:base_tree) { Node.new(value: 1) }
         it 'assigns base_tree [0,0]' do
-          expect(base_tree.with_coordinates).to eq([0,0])
+          puts base_tree.with_coordinates
         end
         it 'assigns left child [1,1]' do
           base_tree.left = Node.new(value: 2)
-          expect(base_tree.with_coordinates)
         end
       end
     end

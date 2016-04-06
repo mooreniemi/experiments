@@ -64,7 +64,7 @@ module Coordinates
 
 
   def with_coordinates
-    
+   inorder {|n, i = 0| i += 1; n.x = i; n.y = i}
   end
 end
 
@@ -82,10 +82,10 @@ class Node
     @right = right
   end
 
-  def preorder(current = self)
-    puts current.value
-    preorder(current.left) unless current.left.nil?
-    preorder(current.right) unless current.right.nil?
+  def preorder(current = self, &block)
+    yield current if block
+    preorder(current.left, &block) unless current.left.nil?
+    preorder(current.right, &block) unless current.right.nil?
   end
 
   def inorder(current = self, &block)
@@ -94,10 +94,10 @@ class Node
     puts inorder(current.right, &block) unless current.right.nil?
   end
 
-  def postorder(current = self)
-    puts postorder(current.left) unless current.left.nil?
-    puts postorder(current.right) unless current.right.nil?
-    puts current.value
+  def postorder(current = self, &block)
+    puts postorder(current.left, &block) unless current.left.nil?
+    puts postorder(current.right, &block) unless current.right.nil?
+    yield current if block
   end
 
   def children
