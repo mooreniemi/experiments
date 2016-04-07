@@ -59,6 +59,9 @@ describe "Tree" do
 	end
 
 	describe "columning" do
+		# https://www.careercup.com/question?id=5749533368647680
+		# Given the root of a binary tree containing integers, print the columns of the tree in order with the nodes in each column printed top-to-bottom.
+
 		context "using coordinates strategy" do
 			describe "#with_coordinates" do
 				let(:base_tree) { Node.new(value: 1) }

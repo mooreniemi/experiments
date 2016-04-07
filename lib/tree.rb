@@ -1,5 +1,12 @@
-# https://www.careercup.com/question?id=5749533368647680
-# Given the root of a binary tree containing integers, print the columns of the tree in order with the nodes in each column printed top-to-bottom.
+module Heapify
+	# TODO
+	# https://en.wikipedia.org/wiki/Binary_heap#Insert
+	def insert
+		#Add the element to the bottom level of the heap.
+		#Compare the added element with its parent; if they are in the correct order, stop.
+		#If not, swap the element with its parent and return to the previous step.
+	end
+end
 
 module Breadth
 	attr_accessor :distance
