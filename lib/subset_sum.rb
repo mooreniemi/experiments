@@ -39,7 +39,7 @@ module SubsetSum
 				end
 			end
 
-			table.to_readable
+			# table.to_readable
 
 			col_header = table.row(0).to_a.map(&:to_i)
 
@@ -68,19 +68,17 @@ module SubsetSum
 
 			table.to_readable
 
-			if table.column(col_header[1..-1].index(target) + 1).to_a.include?(true)
-				table.send(:rows).reverse.each_with_index do |row,i|
-					col_position = col_header[1..-1].index(target) + 1
-					row_header = table.column(0).to_a.map(&:to_i)
-					row_position = row_header[1..-1].index(row.first.to_i) + 1
-					binding.pry
-					#We start at the last row in this column; if it has a T and the row above has a T we go to the row above.
-					#If the row above has an F then we take the number which is indexed by the current row and write it into our final output.
-					#We then subtract this number from the column label to get the next column label. We jump to the new column label and go up a row.
-					#Once again if there is a T there and there is an F above, then we write the number indexed by the row into our output and subtract it from the current column label to get the next column label.
-					#We then jump to that column and go up a row again.
-					#We keep doing this until we get to the top of the matrix, at this point the numbers we have written to the output will be our solution.
+			target_col_index = col_header[1..-1].index(target) + 1
+			subset = []
+
+			if table.column(target_col_index).to_a.include?(true)
+				row_count = table.row_count - 1 # ignore header
+				row_count.step(1,-1) do |row_index|
+					next if table[row_index, target_col_index] == true && table[row_index - 1, target_col_index] == true
+					subset << (x = table[row_index, 0].to_i)
+					target_col_index = target_col_index - x
 				end
+				subset
 			else
 				false
 			end

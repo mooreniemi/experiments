@@ -10,10 +10,11 @@ describe 'subset sum' do
   end
 
   it 'returns false when no subset satisfies' do
-    pending
+		expect([2,3].subset_sum_to(6)).to eq(false)
   end
 
   it 'returns the subset when one satisfies' do
-    expect([1,-3,2,4].subset_sum_to(0)).to eq([-3,1,2])
+    expect([1,-3,2,4].subset_sum_to(0).sort).to eq([2,-3,1].sort)
+    expect([1,2,3,4].subset_sum_to(6).sort).to eq([1,2,3].sort)
   end
 end
