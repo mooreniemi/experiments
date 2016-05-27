@@ -31,7 +31,7 @@ module SubsetSum
 				if col == 0 && row == 0
 					" ".center(5)
 				elsif col == 0
-					"#{array_index += 1}".center(5)
+					"#{self[array_index += 1]}".center(5)
 				elsif row == 0
 					"#{potential_sums.shift}".center(5)
 				else
@@ -39,14 +39,28 @@ module SubsetSum
 				end
 			end
 
-			table.each_with_index do |e, row, col|
-				next if row == 0 && col == 0
-				seeking = self[col - 1]
-				num_in_col = table[0,row].to_i
+			table.each_with_index do |e, row_position, col_position|
+				next if row_position == 0 || col_position == 0
+        # we skip a row / column because of the header row / column
+        num_from_subset = self[row_position - 1]
+        col_label = table.column(col_position).first.to_i
 
-				if seeking == num_in_col
-					table[col,row] = true
-				end
+        if num_from_subset == col_label
+          table[row_position, col_position] = true
+        elsif table[row_position - 1, col_position] == true
+          table[row_position, col_position] = true
+        else
+          sums = table.row(0).to_a.map(&:to_i)
+          y = col_label - num_from_subset
+
+          # we chop off the empty cell that gets coerced to 0 otherwise
+          # and ignore anything that isn't in range
+          next unless sums[1..-1].include?(y)
+
+          if table[row_position - 1, sums.index(y)] == true
+            table[row_position, col_position] = true
+          end
+        end
 			end
 
 			table.to_readable
