@@ -68,7 +68,9 @@ module SubsetSum
 
 			table.to_readable
 
-			target_col_index = col_header[1..-1].index(target) + 1
+			target_col_index = col_header[1..-1].index(target + 1)
+			# TODO this could be caught earlier
+			return false if target_col_index.nil?
 			subset = []
 
 			if table.column(target_col_index).to_a.include?(true)
