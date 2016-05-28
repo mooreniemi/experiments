@@ -25,6 +25,8 @@ module SubsetSum
       return [] if self.empty?
 
       all_summed = self.reject{|n| n <= 0}.reduce(0, :+)
+      # we can do an early check here to make sure reaching
+      # the sum is even possible, given our subset
       return false if all_summed < target
 
       negative_sum = self.reject{|n| n > 0}.reduce(0, :+)
@@ -69,7 +71,7 @@ module SubsetSum
         end
       end
 
-      table.to_readable
+      table.to_readable if ENV['TEST_ENV']
 
       target_col_index = col_header[1..-1].index(target) + 1
       subset = []

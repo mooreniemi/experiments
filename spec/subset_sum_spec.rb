@@ -28,7 +28,8 @@ describe 'subset sum' do
     it 'if target is sum of whole set, return set' do
       property_of {
         len = range(0, 10)
-        #Deflating.new( array(len) { integer } )
+        # couldn't get this to load, docs out of date?
+        # Deflating.new( array(len) { integer } )
         array(len) { range(1,25) }
       }.check {|array|
         expect(array.subset_sum_to(array.reduce(0,:+)).sort).to eq(array.sort)
