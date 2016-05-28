@@ -1,8 +1,10 @@
 require 'matrix'
 class Matrix
+	# make our Matrix mutable
 	def []=(i, j, x)
 		@rows[i][j] = x
 	end
+	# print out a rough table
 	def to_readable
 		i = 0
 		self.each do |number|
@@ -22,12 +24,15 @@ module SubsetSum
 			return [] if self.empty?
 
 			all_summed = self.reject{|n| n <= 0}.reduce(0, :+)
-			tiniest_sum = self.reject{|n| n > 0}.reduce(0, :+)
-			range = tiniest_sum.abs + all_summed.abs
+			return false if all_summed < target
+
+			# this is wrong
+			negative_sum = self.reject{|n| n > 0}.reduce(0, :+)
+			tiniest_sum = negative_sum == 0 ? self.min : negative_sum
 			potential_sums = (tiniest_sum..all_summed).to_a
 			array_index = -1
 
-			table = Matrix.build(self.length + 1, range + 2) do |row, col|
+			table = Matrix.build(self.length + 1, potential_sums.length + 1) do |row, col|
 				if col == 0 && row == 0
 					" ".center(5)
 				elsif col == 0
@@ -38,8 +43,6 @@ module SubsetSum
 					false
 				end
 			end
-
-			# table.to_readable
 
 			col_header = table.row(0).to_a.map(&:to_i)
 
@@ -68,19 +71,20 @@ module SubsetSum
 
 			table.to_readable
 
-			target_col_index = col_header[1..-1].index(target + 1)
-			# TODO this could be caught earlier
-			return false if target_col_index.nil?
+			target_col_index = col_header[1..-1].index(target) + 1
 			subset = []
 
 			if table.column(target_col_index).to_a.include?(true)
 				row_count = table.row_count - 1 # ignore header
 				row_count.step(1,-1) do |row_index|
-					next if table[row_index, target_col_index] == true && table[row_index - 1, target_col_index] == true
+					next if table[row_index - 1, target_col_index] == true
+
 					subset << (x = table[row_index, 0].to_i)
-					target_col_index = target_col_index - x
+					target_col_label = table[0, target_col_index].to_i
+					return subset if row_index == 1 || target_col_label - x == 0
+
+					target_col_index = (col_header[1..-1].index(target_col_label - x) + 1)
 				end
-				subset
 			else
 				false
 			end
