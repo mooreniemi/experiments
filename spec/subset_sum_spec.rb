@@ -29,7 +29,7 @@ describe 'subset sum' do
       property_of {
         len = range(0, 10)
         #Deflating.new( array(len) { integer } )
-        array(len) { range(0,20) }
+        array(len) { range(1,25) }
       }.check {|array|
         expect(array.subset_sum_to(array.reduce(0,:+)).sort).to eq(array.sort)
       }
