@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# http://www.redblobgames.com/pathfinding/a-star/introduction.html
 # http://www.redblobgames.com/pathfinding/a-star/implementation.html
 # http://www.redblobgames.com/pathfinding/grids/graphs.html
 

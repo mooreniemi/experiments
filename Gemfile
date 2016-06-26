@@ -9,3 +9,4 @@ gem "m"
 gem "rspec"
 gem "pry"
 gem "rantly"
+gem 'gnuplot'
