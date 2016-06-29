@@ -8,6 +8,7 @@ class Array
 	end
 
 	def theirs
+		# https://www.interviewcake.com/question/ruby/highest-product-of-3
 		if self.length < 3
 			return 0
 			#raise Exception, 'Less than 3 items!'
