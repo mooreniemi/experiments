@@ -4,11 +4,13 @@ require 'benchmark'
 class Array
 	def mine
 		return 0 if self.size < 3
+		# any comparison sort cant do better than n log n
 		self.sort {|a,b| a.abs <=> b.abs }[-3..-1].reduce(1, :*)
 	end
 
 	def theirs
 		# https://www.interviewcake.com/question/ruby/highest-product-of-3
+		# a truly linear answer
 		if self.length < 3
 			return 0
 			#raise Exception, 'Less than 3 items!'
