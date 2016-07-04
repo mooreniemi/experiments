@@ -32,7 +32,7 @@ describe 'subset sum' do
         # Deflating.new( array(len) { integer } )
         array(len) { range(1,25) }
       }.check {|array|
-        expect(array.subset_sum_to(array.reduce(0,:+)).sort).to eq(array.sort)
+        expect(array.subset_sum_to(array.reduce(0,:+))).to match_array(array)
       }
     end
   end
