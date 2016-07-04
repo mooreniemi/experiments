@@ -1,15 +1,20 @@
 class Array
   def find_max
     pivot = (self.length / 2).floor
+    list = self
     max = nil
     while max.nil?
-      if self[pivot] > self[pivot - 1] && self[pivot] > self[pivot + 1]
-        max = self[pivot]
+			# fetching in case we dont have any more elements higher or lower
+      if list[pivot] > list.fetch(pivot - 1,0) && list[pivot] > list.fetch(pivot + 1,0)
+        max = list[pivot]
       else
-        if self[pivot] > self[pivot - 1]
-          pivot = (self[pivot + 1..-1][0] / 2).floor
+        # if increasing still
+        if list[pivot] > list[pivot - 1]
+          list = list[pivot..-1]
+          pivot = (list.length / 2).floor
         else
-          pivot = (self[0..pivot - 1][0] / 2).floor
+          list = list[0..pivot]
+          pivot = (list.length / 2).floor
         end
       end
     end

@@ -10,9 +10,11 @@ describe Array do
     end
     it 'satisfies property test' do
       property_of {
-        array(49) { range(1,998) }.sort + [999] +
-        array(49) { range(1,998) }.sort { |x,y| y <=> x }
-      }.check {|array|
+        len_one = range(1,49)
+        len_two = range(1,49)
+        (array(len_one) { range(1,998) }.sort + [999] +
+          array(len_two) { range(1,998) }.sort { |x,y| y <=> x }).uniq
+      }.check(1000) {|array|
         expect(array.find_max).to eq(999)
       }
     end
