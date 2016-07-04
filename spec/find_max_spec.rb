@@ -11,7 +11,7 @@ describe Array do
     it 'satisfies property test' do
       property_of {
         array(49) { range(1,998) }.sort + [999] +
-        array(49) { range(1, 998) }.sort { |x,y| y <=> x }
+        array(49) { range(1,998) }.sort { |x,y| y <=> x }
       }.check {|array|
         expect(array.find_max).to eq(999)
       }
