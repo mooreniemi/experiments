@@ -22,7 +22,7 @@ describe Array do
 				 array(len_two) { range(1,998) }.sort { |x,y| y <=> x }).uniq
 			}.check(1000) {|array|
 				# used to output case if im in infinite loop
-				puts array.inspect
+				#puts array.inspect
 				expect(array.find_max).to eq(999)
 			}
 		end
