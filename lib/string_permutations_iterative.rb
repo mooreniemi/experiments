@@ -17,6 +17,7 @@ class String
       end
       strings << s.prefix if s.rest == ""
     end
-    strings
+
+    strings.uniq
   end
 end
