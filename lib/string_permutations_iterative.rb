@@ -22,12 +22,14 @@ class String
 
         stack.push(PermuteOp.new(s.prefix + prefix, copy))
 
-        # lets see whats on the stack as it executes
-        puts frame = "op_count: #{op_count}"
-        puts "fixed: #{s.prefix}"
-        puts "current strings: #{strings.inspect}"
-        puts "current stack: #{stack.map(&:to_s)}"
-        puts "-" * frame.size
+        if !ENV['LOUD'].nil?
+          # lets see whats on the stack as it executes
+          puts frame = "op_count: #{op_count}"
+          puts "op: #{s.prefix} + #{prefix}"
+          puts "current strings: #{strings.inspect}"
+          puts "current stack: #{stack.map(&:to_s)}"
+          puts "-" * frame.size
+        end
       end
 
       strings << s.prefix if s.rest == ""
