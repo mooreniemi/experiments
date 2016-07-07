@@ -7,12 +7,23 @@ class Fixnum
     (self - 1).fibonacci_r + (self - 2).fibonacci_r
   end
 
+
   def fibonacci_s
-    results = []
+    sum = 0
     stack = [self]
     while !stack.empty?
+      e = stack.pop
+      case e
+      when -> (n) { n <= 0 }
+      when -> (n) { n == 1 }
+        sum += e
+        puts "sum: #{sum}"
+      else
+        stack.push(e - 1, e - 2)
+        puts "stack: #{stack}"
+      end
     end
-    results
+    sum
   end
 end
 
