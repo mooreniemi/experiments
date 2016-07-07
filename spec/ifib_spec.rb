@@ -12,8 +12,7 @@ class Fixnum
     sum = 0
     stack = [self]
     while !stack.empty?
-      e = stack.pop
-      case e
+      case e = stack.pop
       when -> (n) { n <= 0 }
       when -> (n) { n == 1 }
         sum += e
