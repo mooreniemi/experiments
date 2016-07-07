@@ -24,6 +24,7 @@ class String
 
         if !ENV['LOUD'].nil?
           # lets see whats on the stack as it executes
+          # ie. https://gist.github.com/mooreniemi/2a00e89725d8b6884b28fcc9572d0163
           puts frame = "op_count: #{op_count}"
           puts "op: #{s.prefix} + #{prefix}"
           puts "current strings: #{strings.inspect}"
