@@ -7,11 +7,13 @@ class Fixnum
     (self - 1).fibonacci_r + (self - 2).fibonacci_r
   end
 
-
   def fibonacci_s
     sum = 0
     stack = [self]
     while !stack.empty?
+      # not really a case, haha, for a case statement
+      # but wanted to play with using lambdas in one
+      # http://blog.honeybadger.io/rubys-case-statement-advanced-techniques/
       case e = stack.pop
       when -> (n) { n <= 0 }
       when -> (n) { n == 1 }
@@ -27,26 +29,19 @@ class Fixnum
 end
 
 describe Fixnum do
+  let(:series) { [0,1,1,2,3,5,8,13,21] }
   describe "#fibonacci_r" do
     it 'recursively give series number' do
-      expect(1.fibonacci_r).to eq(1)
-      expect(2.fibonacci_r).to eq(1)
-      expect(3.fibonacci_r).to eq(2)
-      expect(4.fibonacci_r).to eq(3)
-      expect(5.fibonacci_r).to eq(5)
-      expect(6.fibonacci_r).to eq(8)
-      expect(7.fibonacci_r).to eq(13)
+      series.each_with_index do |fib_num, i|
+        expect(i.fibonacci_r).to eq(fib_num)
+      end
     end
   end
   describe "#fibonacci_s" do
     it 'uses stack to give series number' do
-      expect(1.fibonacci_s).to eq(1)
-      expect(2.fibonacci_s).to eq(1)
-      expect(3.fibonacci_s).to eq(2)
-      expect(4.fibonacci_s).to eq(3)
-      expect(5.fibonacci_s).to eq(5)
-      expect(6.fibonacci_s).to eq(8)
-      expect(7.fibonacci_s).to eq(13)
+      series.each_with_index do |fib_num, i|
+        expect(i.fibonacci_s).to eq(fib_num)
+      end
     end
   end
 end
