@@ -14,7 +14,7 @@ class Node
   end
 
   def to_s
-    value
+    [value, distance]
   end
 end
 
@@ -60,6 +60,32 @@ Graph = Struct.new(:nodes) do
 
     nodes.map(&:value).zip(nodes.map(&:distance))
   end
+
+  def shortest_path(source, target)
+    source.distance = 0
+    pq = PQueue.new(nodes) { |a, b| a.distance < b.distance }
+    path = []
+
+    until pq.empty?
+      (current = pq.pop).edge_list.keys.each do |n|
+        if n == target
+          u = n
+          until u.parent.nil?
+            path << u.to_s unless path.include? u.to_s
+            u = u.parent
+          end
+        end
+
+        alt = current.distance + current.edge_list[n]
+        if alt < n.distance
+          n.distance = alt
+          n.parent = current
+        end
+      end
+    end
+
+    path
+  end
 end
 
 one = Node.new(1)
@@ -103,6 +129,11 @@ describe "Dijkstra's Algorithm" do
     let(:graph) { Graph.new([wone, wtwo, wthree, wfour]) }
     it 'gives shortest distance' do
       expect(graph.dijkstra).to eq([[1, 0], [2, 4], [3, 4], [4, 1]])
+    end
+    describe '#shortest_path(source, target)' do
+      it 'returns shortest path' do
+        expect(graph.shortest_path(wone, wthree)).to eq([[3, 4], [4, 1]])
+      end
     end
   end
 end
