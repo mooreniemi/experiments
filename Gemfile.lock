@@ -27,6 +27,7 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
+    pqueue (2.1.0)
     pry (0.10.0)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -64,6 +65,7 @@ DEPENDENCIES
   minitest
   minitest-colorize
   minitest-reporters
+  pqueue
   pry
   pry-byebug
   rantly

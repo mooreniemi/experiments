@@ -15,3 +15,5 @@ gem 'pry-byebug'
 gem 'rantly'
 
 gem 'gnuplot'
+
+gem 'pqueue'
