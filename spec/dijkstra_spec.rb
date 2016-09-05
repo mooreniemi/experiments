@@ -18,6 +18,14 @@ class Node
   end
 end
 
+class WeightedNode < Node
+  attr_accessor :edge_list
+  def initialize(value)
+    @edge_list = {}
+    super
+  end
+end
+
 Graph = Struct.new(:nodes) do
   def breadth_traversal
     nodes.first.distance = 0
@@ -41,8 +49,8 @@ Graph = Struct.new(:nodes) do
     pq = PQueue.new(nodes) { |a, b| a.distance < b.distance }
 
     until pq.empty?
-      (current = pq.pop).adj_list.each do |n|
-        alt = current.distance + n.distance
+      (current = pq.pop).edge_list.keys.each do |n|
+        alt = current.distance + current.edge_list[n]
         if alt < n.distance
           n.distance = alt
           n.parent = current
@@ -50,7 +58,7 @@ Graph = Struct.new(:nodes) do
       end
     end
 
-    nodes.map(&:distance).zip(nodes.map(&:value)).inspect
+    nodes.map(&:value).zip(nodes.map(&:distance))
   end
 end
 
@@ -66,9 +74,23 @@ three.adj_list << one << four
 four.adj_list << three << five
 five.adj_list << four
 
+wone = WeightedNode.new(1)
+wtwo = WeightedNode.new(2)
+wthree = WeightedNode.new(3)
+wfour = WeightedNode.new(4)
+
+wone.edge_list[wtwo] = 4
+wtwo.edge_list[wone] = 4
+wtwo.edge_list[wthree] = 2
+wthree.edge_list[wtwo] = 2
+wthree.edge_list[wfour] = 3
+wfour.edge_list[wthree] = 3
+wfour.edge_list[wone] = 1
+wone.edge_list[wfour] = 1
+
 describe "Dijkstra's Algorithm" do
-  let(:graph) { Graph.new([one, two, three, four, five]) }
   context 'for reference, simple BFS' do
+    let(:graph) { Graph.new([one, two, three, four, five]) }
     it '#breadth_traversal assigns distances correctly' do
       traversed = graph.breadth_traversal
       (1..5).zip([0, 1, 1, 2, 3]).each do |pair|
@@ -78,8 +100,9 @@ describe "Dijkstra's Algorithm" do
     end
   end
   context '#dijkstra' do
+    let(:graph) { Graph.new([wone, wtwo, wthree, wfour]) }
     it 'gives shortest distance' do
-      puts graph.dijkstra
+      expect(graph.dijkstra).to eq([[1, 0], [2, 4], [3, 4], [4, 1]])
     end
   end
 end
