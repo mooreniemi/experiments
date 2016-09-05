@@ -12,6 +12,24 @@ class Node
   end
 end
 
+Graph = Struct.new(:nodes) do
+  def breadth_traversal
+    nodes.first.distance = 0
+    q = [nodes.first]
+
+    until q.empty?
+      (current = q.shift).adj_list.each do |n|
+        next unless n.distance == Float::INFINITY
+        n.distance = current.distance + 1
+        n.parent = current
+        q.unshift(n)
+      end
+    end
+
+    self
+  end
+end
+
 one = Node.new(1)
 two = Node.new(2)
 three = Node.new(3)
@@ -23,25 +41,6 @@ two.adj_list << one
 three.adj_list << one << four
 four.adj_list << three << five
 five.adj_list << four
-
-Graph = Struct.new(:nodes) do
-  def breadth_traversal
-    nodes.first.distance = 0
-    q = [nodes.first]
-
-    until q.empty?
-      current = q.shift
-      current.adj_list.each do |n|
-        next unless n.distance == Float::INFINITY
-        n.distance = current.distance + 1
-        n.parent = current
-        q.unshift(n)
-      end
-    end
-
-    self
-  end
-end
 
 describe "Dijkstra's Algorithm" do
   let(:graph) { Graph.new([one, two, three, four, five]) }
