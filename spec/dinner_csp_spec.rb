@@ -13,6 +13,9 @@ describe 'what do you want for dinner?' do
      'chinese',
      'dogwood'].freeze
   end
+  let(:takeout) do
+    %w(dogwood chinese shwarma burritos)
+  end
   let(:weekdays) do
     %i(monday tuesday
        wednesday thursday
@@ -20,6 +23,9 @@ describe 'what do you want for dinner?' do
   end
   it 'no repeated meals' do
     csp.vars weekdays, meals
+    # could also use #all_different here
+    # https://komputerwiz.net/apps/csp-solver#api-csp-all_different
+    # but this just helps expose the predicate
     csp.all_pairs(weekdays) { |a, b| a != b }
     expect(csp.solve).to eq(
       monday: 'red sauce',
@@ -30,5 +36,15 @@ describe 'what do you want for dinner?' do
       saturday: 'chinese',
       sunday: 'dogwood'
     )
+  end
+  it 'only takeout on weekends' do
+    csp.vars weekdays, meals.shuffle
+    csp.all_pairs(weekdays) { |a, b| a != b }
+    csp.constrain(:saturday, :sunday) { |d| takeout.include?(d) }
+
+    plan = csp.solve
+
+    expect(takeout).to include(plan[:saturday])
+    expect(takeout).to include(plan[:sunday])
   end
 end
