@@ -22,8 +22,7 @@ module Breadth
   end
 
   def as_rows
-    bfs_for(self)
-    rows_copy = self.rows.dup
+    rows_copy = with_rows_and_height.rows.dup
     rowed = []
     self.height.times do |n|
       if n == 1
@@ -43,7 +42,9 @@ module Breadth
     @parent ||= nil
   end
 
-  def bfs_for(element)
+  # same as BFS but returns receiver, just used
+  # for its side-effect
+  def with_rows_and_height
     root = self
     queue = [root]
     visited = []
@@ -55,6 +56,30 @@ module Breadth
       self.height += 1
       adjacency_list.each do |node|
         root.rows << (node.nil? ? "x" : node.value)
+        next if node.nil?
+        visited << node.value
+
+        if node.distance == Float::INFINITY
+          node.distance = current.distance + 1
+          node.parent = current
+          queue.push(node)
+        end
+      end
+    end
+
+    self
+  end
+
+  def bfs_for(element)
+    root = self
+    queue = [root]
+    visited = []
+
+    until queue.empty?
+      current = queue.shift
+      adjacency_list = current.children
+
+      adjacency_list.each do |node|
         next if node.nil?
         visited << node.value
 
@@ -88,7 +113,11 @@ module Coordinates
 
 
   def with_coordinates
-    inorder {|n, i = 0| i += 1; n.xy = [i,i]}
+    i = 0
+    inorder do |n|
+      n.xy = [i,i]
+      i += 1
+    end
     self
   end
 end
