@@ -1,4 +1,5 @@
 require 'spec_helper'
+# https://komputerwiz.net/apps/csp-solver#api-csp
 require 'support/csp'
 
 describe 'what do you want for dinner?' do
@@ -18,9 +19,7 @@ describe 'what do you want for dinner?' do
        friday saturday sunday)
   end
   it 'no repeated meals' do
-    weekdays.each do |wd|
-      csp.var wd, meals
-    end
+    csp.vars weekdays, meals
     csp.all_pairs(weekdays) { |a, b| a != b }
     expect(csp.solve).to eq(
       monday: 'red sauce',
