@@ -2,7 +2,9 @@ require 'spec_helper'
 
 class Node
   attr_reader :value
-  attr_accessor :adj_list, :parent, :distance
+  attr_accessor :adj_list, :parent
+  attr_accessor :distance
+  attr_accessor :edge_list
 
   def initialize(value)
     @value = value
@@ -37,9 +39,9 @@ Graph = Struct.new(:nodes) do
   def dijkstra
     nodes.first.distance = 0
     pq = PQueue.new(nodes) { |a, b| a.distance < b.distance }
+
     until pq.empty?
-      current = pq.pop
-      current.adj_list.each do |n|
+      (current = pq.pop).adj_list.each do |n|
         alt = current.distance + n.distance
         if alt < n.distance
           n.distance = alt
@@ -48,7 +50,7 @@ Graph = Struct.new(:nodes) do
       end
     end
 
-    nodes.map(&:distance).zip(nodes.map {|n| n.parent.to_s }).inspect
+    nodes.map(&:distance).zip(nodes.map(&:value)).inspect
   end
 end
 
