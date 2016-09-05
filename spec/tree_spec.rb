@@ -64,12 +64,14 @@ describe "Tree" do
 
     context "using coordinates strategy" do
       describe "#with_coordinates" do
-        let(:base_tree) { Node.new(value: 1) }
+        let(:base_tree) { Node.new(value: 1).with_coordinates }
         it 'assigns base_tree [0,0]' do
-          puts base_tree.with_coordinates
+          expect(base_tree.xy).to eq([0,0])
         end
         it 'assigns left child [1,1]' do
           base_tree.left = Node.new(value: 2)
+          expect(base_tree.with_coordinates.xy).to eq([0,0])
+          expect(base_tree.with_coordinates.left.xy).to eq([1,1])
         end
       end
     end

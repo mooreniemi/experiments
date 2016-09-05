@@ -71,9 +71,8 @@ module Breadth
 end
 
 module Coordinates
-  attr_accessor :x
-  attr_accessor :y
   attr_accessor :xy
+  attr_accessor :x, :y
 
   def xy
     @xy ||= [0,0]
@@ -89,7 +88,8 @@ module Coordinates
 
 
   def with_coordinates
-    inorder {|n, i = 0| i += 1; n.x = i; n.y = i}
+    inorder {|n, i = 0| i += 1; n.xy = [i,i]}
+    self
   end
 end
 
@@ -97,8 +97,7 @@ class Node
   include Breadth
   include Coordinates
 
-  attr_accessor :left
-  attr_accessor :right
+  attr_accessor :left, :right
   attr_accessor :value
 
   def initialize(value: nil, left: nil, right: nil)
