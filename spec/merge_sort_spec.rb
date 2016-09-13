@@ -52,5 +52,8 @@ describe '#halve' do
       x.report('halve') { array.halve }
       x.report('slice_half') { array.each_slice((array.size / 2.0).round).to_a }
     end
+
+    expect(Benchmark.realtime { array.halve }).
+      to be < Benchmark.realtime { array.each_slice((array.size / 2.0)).to_a }
   end
 end
