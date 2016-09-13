@@ -59,5 +59,8 @@ describe Fixnum do
         expect(i.fibonacci_s).to eq(fib_num)
       end
     end
+    it 'doesnt exhaust the actual stack' do
+      1000.fibonacci_s
+    end
   end
 end
