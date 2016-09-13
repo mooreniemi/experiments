@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'benchmark'
 
 MERGE = proc do |a, b|
   c = []
@@ -40,5 +41,16 @@ describe 'merge_sort' do
   it 'sorts an Array' do
     expect(merge_sort([13, 2])).to eq([2, 13])
     expect(merge_sort([13, 2, 5, 1, 22])).to eq([1, 2, 5, 13, 22])
+  end
+end
+
+describe '#halve' do
+  it 'is faster than slicing' do
+    array = (1..1_000_000).map { rand }
+
+    Benchmark.bmbm do |x|
+      x.report('halve') { array.halve }
+      x.report('slice_half') { array.each_slice((array.size / 2.0).round).to_a }
+    end
   end
 end
