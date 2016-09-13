@@ -45,12 +45,14 @@ describe 'merge_sort' do
 end
 
 describe '#halve' do
-  it 'is faster than slicing' do
+  it 'is faster than #each_slice-ing' do
     array = (1..1_000_000).map { rand }
 
     Benchmark.bmbm do |x|
-      x.report('halve') { array.halve }
-      x.report('slice_half') { array.each_slice((array.size / 2.0).round).to_a }
+      x.report('#halve') { array.halve }
+      # http://heyrod.com/snippets/split-ruby-array-in-half.html
+      x.report('#each_slice') { array.each_slice((array.size / 2.0).round).to_a }
+      x.report('#slice with pivot') { [array.slice(0..pivot = (array.size / 2.0).round - 1), array.slice(pivot + 1..array.size)]  }
     end
 
     expect(Benchmark.realtime { array.halve }).
