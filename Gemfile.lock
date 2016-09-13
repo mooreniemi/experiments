@@ -49,6 +49,7 @@ GEM
     rspec-mocks (3.0.2)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
+    rubocop-rspec (1.4.0)
     ruby-progressbar (1.6.0)
     slop (3.6.0)
     thread_safe (0.3.4)
@@ -70,6 +71,7 @@ DEPENDENCIES
   pry-byebug
   rantly
   rspec
+  rubocop-rspec
 
 BUNDLED WITH
    1.12.5
