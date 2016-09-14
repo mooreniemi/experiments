@@ -1,6 +1,9 @@
 require 'spec_helper'
 require 'benchmark'
 
+# why a proc? because ideally i'd make it an anonymous proc
+# inside the body of #merge_sort but i kept it out so
+# i could test it independently
 MERGE = proc do |a, b|
   c = []
   c << (a.first > b.first ? b.shift : a.shift) until a.empty? || b.empty?
@@ -11,7 +14,10 @@ end
 
 class Array
   def halve
-    [take(pivot = (size / 2.0).round), drop(pivot)]
+    [
+      slice(0..pivot = (size / 2.0).round - 1),
+      slice(pivot + 1..size)
+    ]
   end
 end
 
@@ -49,10 +55,10 @@ describe '#halve' do
     array = (1..1_000_000).map { rand }
 
     Benchmark.bmbm do |x|
-      x.report('#halve') { array.halve }
+      x.report('#take & #drop') { [array.take(pivot = (array.size / 2.0).round), array.drop(pivot)] }
       # http://heyrod.com/snippets/split-ruby-array-in-half.html
       x.report('#each_slice') { array.each_slice((array.size / 2.0).round).to_a }
-      x.report('#slice with pivot') { [array.slice(0..pivot = (array.size / 2.0).round - 1), array.slice(pivot + 1..array.size)]  }
+      x.report('#slice with pivot') { [array.slice(0..pivot = (array.size / 2.0).round - 1), array.slice(pivot + 1..array.size)] }
     end
 
     expect(Benchmark.realtime { array.halve }).
