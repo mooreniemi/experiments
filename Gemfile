@@ -16,5 +16,6 @@ gem 'pry-byebug'
 gem 'rantly'
 
 gem 'gnuplot'
+gem 'benchmark-memory'
 
 gem 'pqueue'

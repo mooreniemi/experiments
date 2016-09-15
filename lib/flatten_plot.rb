@@ -1,5 +1,6 @@
 require 'gnuplot'
 require 'benchmark'
+require 'benchmark-memory'
 
 Gnuplot.open do |gp|
   Gnuplot::Plot.new( gp ) do |plot|
@@ -20,14 +21,14 @@ Gnuplot.open do |gp|
       ds.title = "flatten+compact"
     end
 
-    b = x.collect do |v|
+    z = x.collect do |v|
       a = Array.new(v,[v]<<[v]*v)
-      Benchmark.measure { a.flat_map {|e| e unless e.nil? } }.real
+      Benchmark.memory {|r| r.report("flatten+compact") { a.flatten.compact }}.entries.first.measurement.memory.allocated
     end
 
-    plot.data << Gnuplot::DataSet.new( [x, b] ) do |ds|
+    plot.data << Gnuplot::DataSet.new( [x, z] ) do |ds|
       ds.with = "linespoints"
-      ds.title = "flat_map"
+      ds.title = "flatten+compact memory"
     end
 
     c = x.collect do |v|
@@ -38,6 +39,16 @@ Gnuplot.open do |gp|
     plot.data << Gnuplot::DataSet.new( [x, c] ) do |ds|
       ds.with = "linespoints"
       ds.title = "only flatten"
+    end
+
+    d = x.collect do |v|
+      a = Array.new(v,[v]<<[v]*v)
+      Benchmark.memory {|r| r.report("flatten") { a.flatten }}.entries.first.measurement.memory.allocated
+    end
+
+    plot.data << Gnuplot::DataSet.new( [x, d] ) do |ds|
+      ds.with = "linespoints"
+      ds.title = "flatten memory"
     end
   end
 end
