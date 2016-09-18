@@ -8,6 +8,12 @@ module Combinators
       end.curry
     end
 
+    def thrush
+      proc do |i,x|
+        i.(self.(x))
+      end.curry
+    end
+
     def * other
       self.compose.(other)
     end
