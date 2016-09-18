@@ -1,35 +1,39 @@
 require 'spec_helper'
 
-class Proc
-  def compose
-    proc do |i,x|
-      self.(i.(x))
-    end.curry
+module Combinators
+  refine Proc do
+    def compose
+      proc do |i,x|
+        self.(i.(x))
+      end.curry
+    end
+
+    def * other
+      self.compose.(other)
+    end
+
+    def blackbird
+      proc {|g|
+        self.compose * g
+      }
+    end
+
+    def psi
+      proc {|g,x,y|
+        # \f g x y -> f(g x) (g y)
+        self.(g.(x), g.(y))
+      }.curry
+    end
+
+    def cardinal
+      proc {|x,y|
+        self.call(y, x)
+      }.curry
+    end
   end
 
-  def * other
-    self.compose.(other)
-  end
-
-  def blackbird
-    proc {|g|
-      self.compose * g
-    }
-  end
-
-  def psi
-    proc {|g,x,y|
-      # \f g x y -> f(g x) (g y)
-      self.(g.(x), g.(y))
-    }.curry
-  end
-
-  def cardinal
-    proc {|x,y|
-      self.call(y, x)
-    }.curry
-  end
 end
+using Combinators
 
 def aggregater
   proc {|f,l|
