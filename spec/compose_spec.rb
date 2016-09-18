@@ -32,12 +32,10 @@ class Proc
 end
 
 def aggregater
-  proc {|f|
-    proc {|l|
-      l.map(&f).
-        reduce(0, :+)
-    }
-  }
+  proc {|f,l|
+    l.map(&f).
+      reduce(0, :+)
+  }.curry
 end
 
 describe '#compose' do
@@ -66,11 +64,9 @@ describe '#blackbird' do
     proc {|a| a.reduce(0, :+) }
   end
   let(:map) do
-    proc {|f|
-      proc {|a|
-        a.map &f
-      }
-    }
+    proc {|f,a|
+      a.map &f
+    }.curry
   end
   it 'composition of compose' do
     aggregate = sum.blackbird.(map)
