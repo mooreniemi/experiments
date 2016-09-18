@@ -8,14 +8,18 @@ module Combinators
       end.curry
     end
 
+    def * other
+      self.compose.(other)
+    end
+
     def thrush
       proc do |i,x|
         i.(self.(x))
       end.curry
     end
 
-    def * other
-      self.compose.(other)
+    def % other
+      self.thrush.(other)
     end
 
     def blackbird
@@ -31,6 +35,7 @@ module Combinators
         self.(g.(x), g.(y))
       }.curry
     end
+    alias :on :psi
 
     def cardinal
       proc {|x,y|
