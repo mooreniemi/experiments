@@ -14,6 +14,7 @@ module Combinators
 
     def blackbird
       proc {|g|
+        # \f g x y -> f(g x y)
         self.compose * g
       }
     end
