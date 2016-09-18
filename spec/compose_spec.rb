@@ -105,7 +105,7 @@ describe '#psi (on)' do
   it 'can be used to compare two items by intermediation' do
     a = [[1], [2,3], [4,5,6]]
     b = [[9], [8,7], [6,5,4]]
-    list_size = comp.psi.(map_length)
+    list_size = comp.on.(map_length)
     expect(list_size.(a).(b)).to eq(true)
   end
 end
