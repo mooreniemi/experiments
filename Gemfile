@@ -19,3 +19,4 @@ gem 'gnuplot'
 gem 'benchmark-memory'
 
 gem 'pqueue'
+gem 'array_collapse'

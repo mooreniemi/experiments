@@ -8,6 +8,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     ansi (1.4.3)
+    array_collapse (0.0.1)
     benchmark-memory (0.1.1)
       memory_profiler (~> 0.9)
     builder (3.2.2)
@@ -64,6 +65,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  array_collapse
   benchmark-memory
   gnuplot
   m

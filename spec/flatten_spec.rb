@@ -29,7 +29,7 @@ describe 'flatten(array)' do
 end
 
 class Array
-  def flat_stack
+  def flat_stack(keep_nil = true)
     flat = []
     stack = [] << self
 
@@ -40,7 +40,12 @@ class Array
         if a.is_a? Array
           stack << a
         else
-          flat << a
+          a = yield a if block_given?
+          if keep_nil
+            flat << a
+          else
+            flat << a unless a.nil?
+          end
         end
       end
     end
