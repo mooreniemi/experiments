@@ -2,14 +2,13 @@ require 'spec_helper'
 
 class Node
   attr_reader :value
-  attr_accessor :adj_list, :parent
+  attr_accessor :parent
   attr_accessor :distance
 
   def initialize(value)
     @value = value
     @parent = nil
     @distance = Float::INFINITY
-    @adj_list = []
   end
 end
 
