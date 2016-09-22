@@ -4,7 +4,6 @@ class Node
   attr_reader :value
   attr_accessor :adj_list, :parent
   attr_accessor :distance
-  attr_accessor :edge_list
 
   def initialize(value)
     @value = value
@@ -51,7 +50,7 @@ Graph = Struct.new(:nodes) do
     until pq.empty?
       (current = pq.pop).edge_list.keys.each do |n|
         alt = current.distance + current.edge_list[n]
-        if alt < n.distance
+        if pq.include?(n) && alt < n.distance
           n.distance = alt
           n.parent = current
         end
@@ -77,7 +76,7 @@ Graph = Struct.new(:nodes) do
         end
 
         alt = current.distance + current.edge_list[n]
-        if alt < n.distance
+        if pq.include?(n) && alt < n.distance
           n.distance = alt
           n.parent = current
         end
