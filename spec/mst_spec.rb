@@ -2,8 +2,7 @@ require 'spec_helper'
 
 class Node
   attr_reader :value
-  attr_accessor :parent
-  attr_accessor :distance
+  attr_accessor :parent, :distance
 
   def initialize(value)
     @value = value
