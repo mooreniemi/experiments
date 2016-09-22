@@ -57,6 +57,35 @@ Graph = Struct.new(:nodes) do
 
     nodes.map(&:value).zip(nodes.map(&:distance))
   end
+
+  def dijkstra_proc
+    proc do |c, n|
+      c.distance + c.weight[n]
+    end
+  end
+  def prim_proc
+    proc do |c, n|
+      c.weight[n]
+    end
+  end
+
+  def both
+    fail unless block_given?
+    nodes.first.distance = 0
+    pq = PQueue.new(nodes) { |a, b| a.distance < b.distance }
+
+    until pq.empty?
+      (current = pq.pop).neighbors.each do |n|
+        alt = yield(current, n)
+        if pq.include?(n) && alt < n.distance
+          n.distance = alt
+          n.parent = current
+        end
+      end
+    end
+
+    nodes.map(&:value).zip(nodes.map(&:distance))
+  end
 end
 
 one, two, three, four = Array.new(4) { |i| WeightedNode.new(i+1) }
@@ -93,6 +122,15 @@ describe Graph do
       three.distance = Float::INFINITY
       four.distance = Float::INFINITY
       expect(g.dijkstra.map(&:last).reduce(0,:+)).to eq(15)
+    end
+  end
+
+  describe '#both' do
+    it 'can do dijkstra' do
+      expect(g.both(&g.dijkstra_proc).map(&:last).reduce(0,:+)).to eq(15)
+    end
+    it 'can do prim' do
+      expect(g.both(&g.prim_proc).map(&:last).reduce(0,:+)).to eq(7)
     end
   end
 end
