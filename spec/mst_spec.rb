@@ -28,7 +28,7 @@ end
 
 Graph = Struct.new(:nodes) do
   require 'pqueue'
-  def minimum_span_tree
+  def prim
     nodes.first.distance = 0
     pq = PQueue.new(nodes) { |a, b| a.distance < b.distance }
 
@@ -37,6 +37,22 @@ Graph = Struct.new(:nodes) do
         if pq.include?(n) && (c_to_n = current.weight[n]) < n.distance
           n.parent = current
           n.distance = c_to_n
+        end
+      end
+    end
+
+    nodes.map(&:value).zip(nodes.map(&:distance))
+  end
+  def dijkstra
+    nodes.first.distance = 0
+    pq = PQueue.new(nodes) { |a, b| a.distance < b.distance }
+
+    until pq.empty?
+      (current = pq.pop).neighbors.each do |n|
+        alt = current.distance + current.weight[n]
+        if pq.include?(n) && alt < n.distance
+          n.distance = alt
+          n.parent = current
         end
       end
     end
@@ -64,9 +80,21 @@ four.weight[three] = 1
 
 describe Graph do
   let(:g) { Graph.new([one, two, three, four]) }
-  describe '#minimum_span_tree' do
+  # http://stackoverflow.com/a/20482220/1791856
+  describe '#prim' do
     it 'returns correct distance' do
-      expect(g.minimum_span_tree.map(&:last).reduce(0,:+)).to eq(7)
+      expect(g.prim.map(&:last).reduce(0,:+)).to eq(7)
+    end
+  end
+
+  describe '#dijkstra' do
+    it 'returns correct distance' do
+      # have to reset the distances
+      one.distance = Float::INFINITY
+      two.distance = Float::INFINITY
+      three.distance = Float::INFINITY
+      four.distance = Float::INFINITY
+      expect(g.dijkstra.map(&:last).reduce(0,:+)).to eq(15)
     end
   end
 end
