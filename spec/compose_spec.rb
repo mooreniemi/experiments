@@ -73,7 +73,8 @@ describe '#compose' do
     expect(composition.(2)).to eq(18)
   end
   it 'obeys map f (map g xs) = map (f . g) xs' do
-    expect([1,2].map(&double).map(&triple)).to eq([1,2].map(&(double * triple)))
+    expect([1,2].map(&double).map(&triple)).
+      to eq([1,2].map(&(double * triple)))
   end
 end
 
