@@ -29,6 +29,10 @@ using Composition
 DOUBLE = proc {|a| a * 2 }
 TRIPLE = proc {|a| a * 3 }
 
+def double_triple
+  (DOUBLE * TRIPLE)
+end
+
 def double_map(a)
   a.map(&DOUBLE).map(&TRIPLE)
 end
@@ -37,8 +41,12 @@ def composed(a)
   a.map(&(DOUBLE * TRIPLE))
 end
 
+def cached_compose(a)
+  a.map(&double_triple)
+end
+
 def uncurried_compose(a)
   a.map(&DOUBLE.uncurried_compose(&TRIPLE))
 end
 
-comparison.of(method(:double_map), method(:composed), method(:uncurried_compose))
+comparison.of(method(:double_map), method(:composed), method(:uncurried_compose), method(:cached_compose))
