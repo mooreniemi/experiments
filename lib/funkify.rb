@@ -12,15 +12,13 @@ module Composition
 			end.curry
 		end
 
-		def * other
+		def % other
 			self.compose.(other)
 		end
 	end
 end
 
 class Composer
-	using Composition
-
 	def double
 		proc {|a| a * 2 }
 	end
@@ -48,12 +46,14 @@ def double_map(a)
   a.map(&Composer.new.double).map(&Composer.new.triple)
 end
 
-def composed(a)
-	a.map(&(Composer.new.double * Composer.new.triple))
-end
-
 def funkify(a)
 	a.map(&(MyFunkyClass.new.negate * MyFunkyClass.new.mult(10)))
+end
+
+using Composition
+def composed(a)
+
+	a.map(&(Composer.new.double % Composer.new.triple))
 end
 
 comparison.of(method(:double_map), method(:composed), method(:funkify))
