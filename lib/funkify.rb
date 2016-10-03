@@ -52,7 +52,6 @@ end
 
 using Composition
 def composed(a)
-
 	a.map(&(Composer.new.double % Composer.new.triple))
 end
 
