@@ -8,6 +8,7 @@ gem 'minitest-reporters'
 gem 'm'
 
 gem 'rspec'
+gem 'rubocop'
 gem 'rubocop-rspec'
 
 gem 'pry'

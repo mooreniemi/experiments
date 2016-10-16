@@ -101,6 +101,7 @@ DEPENDENCIES
   pry-byebug
   rantly
   rspec
+  rubocop
   rubocop-rspec
 
 BUNDLED WITH
