@@ -14,21 +14,9 @@ end
 
 def quicksort(array, l=0, n=array.length-1)
   return array if n-l <= 0
-  if l < n
-    _, pivot_index, _ = partition(array, l, n)
-    quicksort(array, l, pivot_index-1)
-    quicksort(array, pivot_index+1, n)
-    p array if ENV['VERBOSE']
-    array
-  end
+  _, pivot_index, _ = partition(array, l, n)
+  quicksort(array, l, pivot_index-1)
+  quicksort(array, pivot_index+1, n)
+  p array if ENV['VERBOSE']
+  array
 end
-
-# require 'ruby-prof'
-# profiled_array = (0..33).to_a.shuffle
-
-# RubyProf.start
-# quicksort(profiled_array)
-# result = RubyProf.stop
-
-# printer = RubyProf::FlatPrinter.new(result)
-# printer.print(STDOUT)
