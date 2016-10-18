@@ -75,8 +75,10 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     rubocop-rspec (1.7.0)
       rubocop (>= 0.42.0)
+    ruby-prof (0.15.9)
     ruby-progressbar (1.8.1)
     slop (3.6.0)
+    stackprof (0.2.9)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -93,6 +95,7 @@ DEPENDENCIES
   gnuplot
   graph-function
   m
+  method_source
   minitest
   minitest-colorize
   minitest-reporters
@@ -103,6 +106,8 @@ DEPENDENCIES
   rspec
   rubocop
   rubocop-rspec
+  ruby-prof
+  stackprof
 
 BUNDLED WITH
    1.12.5

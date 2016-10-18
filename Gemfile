@@ -13,9 +13,12 @@ gem 'rubocop-rspec'
 
 gem 'pry'
 gem 'pry-byebug'
+gem 'method_source'
 
 gem 'rantly'
 
+gem 'stackprof'
+gem 'ruby-prof'
 gem 'graph-function'
 gem 'gnuplot'
 gem 'benchmark-memory'
