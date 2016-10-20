@@ -13,14 +13,14 @@ def partition(array, left_bound, right_bound)
       i += 1
     end
   end
-  array[i-1], array[left_bound] = array[left_bound], array[i-1]
   pivot_index = i-1
+  array[pivot_index], array[left_bound] = array[left_bound], array[pivot_index]
   [pivot, pivot_index, array]
 end
 
 def quicksort(array, l=0, n=array.length-1)
   return array if n-l <= 0
-  _, pivot_index, _ = partition(array, l, n)
+  _, pivot_index, _ = random_partition(array, l, n)
   quicksort(array, l, pivot_index-1)
   quicksort(array, pivot_index+1, n)
   p array if ENV['VERBOSE']
