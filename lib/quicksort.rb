@@ -1,3 +1,9 @@
+def random_partition(array, left_bound, right_bound)
+  pivot_index = rand(left_bound..right_bound)
+  array[pivot_index], array[right_bound] = array[right_bound], array[pivot_index]
+  partition(array, left_bound, right_bound)
+end
+
 def partition(array, left_bound, right_bound)
   pivot = array[left_bound] # ~ array.first
   i = left_bound + 1 # ~ array.second

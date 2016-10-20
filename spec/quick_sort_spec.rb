@@ -104,3 +104,33 @@ describe '#partition' do
     end
   end
 end
+
+describe '#random_partition' do
+  describe 'property tests' do
+    it 'puts pivot in correct sorted position' do
+      property_of {
+        array = array(1000) { call([:range,0,10_000]) }
+        pivot = array.first
+        sorted = array.sort
+        pivot_index = sorted.index(pivot)
+
+        [pivot_index, pivot, array]
+      }.check { |(pi,p,a)|
+        _, _, partitioned = random_partition(a,0,a.length-1)
+        partitioned_position = partitioned.index(p)
+
+        expect(partitioned_position).to eq(pi)
+      }
+    end
+    it 'left of pivot is LT, right of pivot is GT' do
+      property_of {
+        array(1000) { call([:range,0,10_000]) }
+      }.check { |a|
+        pivot = a.first
+        _, pivot_index, partitioned = random_partition(a,0,a.length-1)
+        expect(partitioned[0..pivot_index].all? { |e| e <= pivot}).to eq(true)
+        expect(partitioned[pivot_index..-1].all? { |e| e >= pivot}).to eq(true)
+      }
+    end
+  end
+end
