@@ -21,11 +21,12 @@ def median_element_partition
   end
 end
 
-# default_partition
-def random_partition(array, left_bound, right_bound)
-  pivot_index = rand(left_bound..right_bound)
-  array[pivot_index], array[right_bound] = array[right_bound], array[pivot_index]
-  partition(array, left_bound, right_bound)
+def random_partition
+  proc do |array, left_bound, right_bound|
+    pivot_index = rand(left_bound..right_bound)
+    array[pivot_index], array[right_bound] = array[right_bound], array[pivot_index]
+    partition(array, left_bound, right_bound)
+  end
 end
 
 # first_element_partition, implicitly
@@ -48,11 +49,11 @@ def quicksort(array, l=0, n=array.length-1, &partition_method)
   if block_given?
     _, pivot_index, _ = partition_method.call(array, l, n)
   else
-    _, pivot_index, _ = random_partition(array, l, n)
+    _, pivot_index, _ = partition(array, l, n)
   end
   quicksort(array, l, pivot_index-1, &partition_method)
-  $comparisons += (l..pivot_index-1).to_a.length - 1
+  $comparisons += (l..pivot_index-1).to_a.length
   quicksort(array, pivot_index+1, n, &partition_method)
-  $comparisons += (pivot_index+1..n).to_a.length - 1
+  $comparisons += (pivot_index+1..n).to_a.length
   array
 end
