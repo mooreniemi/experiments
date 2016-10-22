@@ -49,6 +49,25 @@ describe '#quicksort' do
       expect(quicksort(array)).to eq(array.sort)
     end
   end
+  context 'can take different partition blocks' do
+    it 'puts pivot in correct sorted position' do
+      array = [8,2,4,5,7,1]
+      sorted = array.sort
+      expect(quicksort(array, &median_element_partition)).to eq(sorted)
+    end
+    it 'which all sort correctly' do
+      arrays = [[0],[9,8],[7,6,5],[4,3,2,1]]
+      arrays.each do |array|
+        sorted = array.sort
+        expect(quicksort(array, &median_element_partition)).to eq(sorted)
+      end
+      arrays = [[0],[9,8],[7,6,5],[4,3,2,1]]
+      arrays.each do |array|
+        sorted = array.sort
+        expect(quicksort(array, &last_element_partition)).to eq(sorted)
+      end
+    end
+  end
   it 'REALLY sorts an array' do
     property_of {
       array(100) { call([:range,0,10_000]) }
