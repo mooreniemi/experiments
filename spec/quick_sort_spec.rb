@@ -28,8 +28,10 @@ describe '#quicksort' do
     let(:sorted_homework_array) { homework_array.sort }
 
     it 'sorts homework array' do
-      expect(quicksort(homework_array)).
+      $comparisons = 0
+      expect(quicksort(homework_array, &last_element_partition)).
         to eq(sorted_homework_array)
+      puts $comparisons
     end
   end
 
@@ -49,6 +51,7 @@ describe '#quicksort' do
       expect(quicksort(array)).to eq(array.sort)
     end
   end
+
   context 'can take different partition blocks' do
     it 'puts pivot in correct sorted position' do
       array = [8,2,4,5,7,1]
