@@ -50,9 +50,9 @@ def quicksort(array, l=0, n=array.length-1, &partition_method)
   else
     _, pivot_index, _ = random_partition(array, l, n)
   end
-  $comparisons += (l..pivot_index-1).to_a.length - 1
   quicksort(array, l, pivot_index-1, &partition_method)
-  $comparisons += (pivot_index+1..n).to_a.length - 1
+  $comparisons += (l..pivot_index-1).to_a.length - 1
   quicksort(array, pivot_index+1, n, &partition_method)
+  $comparisons += (pivot_index+1..n).to_a.length - 1
   array
 end

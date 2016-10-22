@@ -31,7 +31,7 @@ describe '#quicksort' do
       $comparisons = 0
       expect(quicksort(homework_array, &last_element_partition)).
         to eq(sorted_homework_array)
-      puts $comparisons
+      puts "# of comparisons: #{$comparisons}"
     end
   end
 
