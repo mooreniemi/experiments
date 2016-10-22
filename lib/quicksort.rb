@@ -7,9 +7,10 @@ end
 
 def median_element_partition
   proc do |array, left_bound, right_bound|
+    middle_index = right_bound / 2
     median_choices = [
       [left_bound, array[left_bound]],
-      [(middle = ((left_bound..right_bound).to_a.length / 2) - 1), array[middle]],
+      [middle_index, array[middle_index]],
       [right_bound,array[right_bound]]
     ]
     median = (median_choices - median_choices.minmax { |a,b| a.last <=> b.last }).flatten

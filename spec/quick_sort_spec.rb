@@ -26,19 +26,21 @@ describe '#quicksort' do
         split("\r\n").map(&:to_i)
     end
     let(:test_case_array) do
-      File.read('./spec/support/qs10.txt').
+      File.read('./spec/support/qs100.txt').
         split("\r\n").map(&:to_i)
     end
     let(:sorted_test_case_array) { test_case_array.sort }
     let(:sorted_homework_array) { homework_array.sort }
 
     it 'sorts homework array' do
-      expect(quicksort(homework_array)).
+      $comparisons = 0
+      expect(quicksort(homework_array, &median_element_partition)).
         to eq(sorted_homework_array)
+      puts "# of comparisons: #{$comparisons}"
     end
     it 'counts comparisons' do
       $comparisons = 0
-      expect(quicksort(test_case_array, &last_element_partition)).
+      expect(quicksort(test_case_array, &median_element_partition)).
         to eq(sorted_test_case_array)
       puts "# of comparisons: #{$comparisons}"
     end
