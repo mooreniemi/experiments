@@ -53,8 +53,6 @@ def quicksort(array, l=0, n=array.length-1, &partition_method)
     _, pivot_index, _ = partition(array, l, n)
   end
   quicksort(array, l, pivot_index-1, &partition_method)
-  $comparisons += (l..pivot_index-1).to_a.length
   quicksort(array, pivot_index+1, n, &partition_method)
-  $comparisons += (pivot_index+1..n).to_a.length
   array
 end
