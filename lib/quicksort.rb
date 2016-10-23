@@ -7,7 +7,7 @@ end
 
 def median_element_partition
   proc do |array, left_bound, right_bound|
-    middle_index = right_bound / 2
+    middle_index = (left_bound + right_bound) / 2
     median_choices = [
       [left_bound, array[left_bound]],
       [middle_index, array[middle_index]],
