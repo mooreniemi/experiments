@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+# An exercise drawn from Grokking Algorithms, chapter 9 (pg. 162)
+# https://www.manning.com/books/grokking-algorithms
+
 KNAPSACK_CAPACITY = 4
 
 class Good
