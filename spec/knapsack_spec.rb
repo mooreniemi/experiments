@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+KNAPSACK_CAPACITY = 4
+
 class Good
   attr_accessor :weight, :price, :kind
   def initialize(w, p, k)
@@ -15,7 +17,7 @@ class Knapsack < Array
 
     added_weight = e.weight
     current_weight = self.map(&:weight).reduce(0, :+)
-    fail 'Knapsack overcapacity!' if current_weight + added_weight > 4
+    fail 'Knapsack overcapacity!' if current_weight + added_weight > KNAPSACK_CAPACITY
 
     super
   end
@@ -31,7 +33,7 @@ class Thief
   def steal_optimally_from(house)
     # prepopulate our table with each good
     table = house.posessions.each_with_object([]) do |e, a|
-      a << [e] * 4
+      a << [e] * KNAPSACK_CAPACITY
     end
 
     # each row is a Good, and each column a price per weight
