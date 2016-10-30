@@ -49,7 +49,7 @@ class Thief
         # now we know this Good fits, but does it fill this slot?
         remaining_weight = weight_limit - good.weight
         if remaining_weight > 0
-          previous_good = table[row-1][remaining_weight]
+          previous_good = table[row-1][remaining_weight-1]
         else
           previous_good = nil
         end
@@ -60,7 +60,7 @@ class Thief
         current_good_price = good.is_a?(Array) ? sum_prices_of.(good) : good.price
 
         if newly_combined_goods_price > current_good_price
-          table[row][column] = newly_combined_goods
+          table[row][column] = newly_combined_goods.flatten
         else
           table[row][column] = good
         end
@@ -88,7 +88,10 @@ describe 'a Thief in the night' do
   let(:guitar) { Good.new(1,15,'guitar') }
   let(:stereo) { Good.new(4,30,'stereo') }
   let(:laptop) { Good.new(3,20,'laptop') }
+  let(:iphone) { Good.new(1,20,'iphone') }
+
   let(:house) { House.new([guitar, stereo, laptop]) }
+  let(:house_with_iphone) { House.new([guitar, stereo, laptop, iphone]) }
   let(:thief) { Thief.new }
 
   it 'has a Knapsack (container of Goods) with a 4lb maximum' do
@@ -99,8 +102,13 @@ describe 'a Thief in the night' do
     expect(Knapsack.new << guitar << laptop).to be_a(Knapsack)
   end
 
-  it 'maximizes price by weight in stealing' do
+  it 'will #steal_optimally_from(House)' do
     expect(thief.steal_optimally_from(house).knapsack).
       to match_array([guitar, laptop])
+  end
+
+  it 'definitely grabs your iPhone, too' do
+    expect(thief.steal_optimally_from(house_with_iphone).knapsack).
+      to match_array([iphone, laptop])
   end
 end
