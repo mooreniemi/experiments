@@ -39,13 +39,15 @@ class Thief
       a << [e] * KNAPSACK_CAPACITY
     end
 
-    # each row is a Good, and each column a #price per #weight
+    # we can skip the first row, because we pre-populated
     1.upto(house.posessions.size - 1) do |row|
+      # each Good gets its own row, and each column is a #weight capacity ('slot')
       table[row].each_with_index do |good, column|
-        # adjusted because we're 0-indexed
+        # adjusted because we're 0-indexed in an Array
         weight_limit = column + 1
 
         # make sure this Good fits, and if not, grab previous
+        # we could make this step a no-op if we prepopulate differently
         if good.weight > weight_limit
           table[row][column] = table[row-1][column]
           next
@@ -60,8 +62,11 @@ class Thief
         end
         newly_combined_goods = [good, previous_good]
 
+        # if the slot wasn't full, we filled the remaining #weight,
+        # so let's compare that to just this current Good's #price
         sum_prices_of = proc { |a| a.flatten.compact.map(&:price).reduce(0, :+) }
         newly_combined_goods_price = sum_prices_of.(newly_combined_goods)
+        # we have to account for Array here because we might already be a combo
         current_good_price = good.is_a?(Array) ? sum_prices_of.(good) : good.price
 
         if newly_combined_goods_price > current_good_price
