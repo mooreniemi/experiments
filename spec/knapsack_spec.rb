@@ -34,12 +34,12 @@ class Thief
   end
 
   def steal_optimally_from(house)
-    # prepopulate our table with each good
+    # prepopulate our table with each Good
     table = house.posessions.each_with_object([]) do |e, a|
       a << [e] * KNAPSACK_CAPACITY
     end
 
-    # each row is a Good, and each column a price per weight
+    # each row is a Good, and each column a #price per #weight
     1.upto(house.posessions.size - 1) do |row|
       table[row].each_with_index do |good, column|
         # adjusted because we're 0-indexed
