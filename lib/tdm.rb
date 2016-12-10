@@ -64,9 +64,10 @@ end
 
 comparison.of(method(:tdm), method(:if_else))
 
-require 'benchmark/memory'
-Benchmark.memory do |x|
-  x.report('tdm') { tdm(array_generator.(5)) }
-  x.report('if_else') { if_else(array_generator.(5)) }
-  x.compare!
-end
+# https://github.com/michaelherold/benchmark-memory
+#require 'benchmark/memory'
+#Benchmark.memory do |x|
+#  x.report('tdm') { tdm(array_generator.(5)) }
+#  x.report('if_else') { if_else(array_generator.(5)) }
+#  x.compare!
+#end

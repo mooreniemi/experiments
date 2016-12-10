@@ -1,13 +1,3 @@
-PATH
-  remote: /Users/Alex/Documents/Code/graph-function
-  specs:
-    graph-function (0.2.0)
-      faker
-      gnuplot
-      memory_profiler
-      rantly
-      ruby-progressbar
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -30,6 +20,12 @@ GEM
       i18n (~> 0.5)
     funkify (0.0.4)
     gnuplot (2.6.2)
+    graph-function (0.2.0)
+      faker
+      gnuplot
+      memory_profiler
+      rantly
+      ruby-progressbar
     i18n (0.7.0)
     m (1.5.0)
       method_source (>= 0.6.7)
@@ -97,7 +93,7 @@ DEPENDENCIES
   benchmark-memory
   funkify
   gnuplot
-  graph-function!
+  graph-function
   m
   memory_profiler
   method_source
