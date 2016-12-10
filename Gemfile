@@ -19,9 +19,11 @@ gem 'rantly'
 
 gem 'stackprof'
 gem 'ruby-prof'
-gem 'graph-function'
+gem 'graph-function', path: "/Users/Alex/Documents/Code/graph-function"
+#gem 'graph-function'
 gem 'gnuplot'
 gem 'benchmark-memory'
+gem 'memory_profiler'
 
 gem 'pqueue'
 gem 'array_collapse'
