@@ -3,7 +3,7 @@ require 'graph/function'
 
 Graph::Function.configure do |config|
   #config.trials = 1_000
-  config.memory = true
+  #config.memory = true
 end
 
 Graph::Function.as_gif(File.expand_path('../tdm.gif', __FILE__))
