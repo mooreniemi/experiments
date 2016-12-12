@@ -1,7 +1,8 @@
 require 'benchmark/memory'
 
-    D = proc {|x| p "#{x} is dead".freeze }
-    L = proc {|x| p "#{x} is live".freeze }
+D = proc {|x| p "#{x} is dead".freeze }
+L = proc {|x| p "#{x} is live".freeze }
+
 Benchmark.memory do |x|
   x.report("SDM") do
     next_state_string = "DDDLDDDLLD".freeze
