@@ -17,7 +17,9 @@ Benchmark.memory do |x|
   end
 
   x.report("TDM") do
-    next_state_array = [["D", "D", "D", "L", "D"], ["D", "D", "L", "L", "D"]].freeze
+    d = "D".freeze
+    l = "L".freeze
+    next_state_array = [[d, d, d, l, d], [d, d, l, l, d]].freeze
 
     number_of_live_neighbors = 3
 
