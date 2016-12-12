@@ -16,47 +16,44 @@ prng = Random.new
 @is_live = prng.rand(0..1)
 @num_live_neighbors = prng.rand(0..4)
 
+LIVE = proc {|c| c.push(1) }
+DIE = proc {|c| c.clear }
+
+NEXT_LIVE_STATE = [DIE, DIE, LIVE, LIVE, DIE].freeze
+NEXT_DEAD_STATE = [DIE, DIE, DIE, LIVE, DIE].freeze
+NEXT_STATE = [NEXT_DEAD_STATE, NEXT_LIVE_STATE].freeze
+
 def tdm(a)
-  live = proc {|c| c.push(1) }
-  die = proc {|c| c.clear }
-
-  next_live_state = [die, die, live, live, die].freeze
-  next_dead_state = [die, die, die, live, die].freeze
-  next_state = [next_dead_state, next_live_state].freeze
-
-  a.each {|e| next_state[@is_live][@num_live_neighbors].(e) }
+  a.each {|e| NEXT_STATE[@is_live][@num_live_neighbors].(e) }
 end
 
 def if_else(a)
-  live = proc {|c| c.push(1) }
-  die = proc {|c| c.clear }
-
   a.each do |e|
     if @is_live == 0
       case @num_live_neighbors
       when 0
-        die.(e)
+        DIE.(e)
       when 1
-        die.(e)
+        DIE.(e)
       when 2
-        live.(e)
+        LIVE.(e)
       when 3
-        live.(e)
+        LIVE.(e)
       when 4
-        die.(e)
+        DIE.(e)
       end
     else
       case @num_live_neighbors
       when 0
-        die.(e)
+        DIE.(e)
       when 1
-        die.(e)
+        DIE.(e)
       when 2
-        die.(e)
+        DIE.(e)
       when 3
-        live.(e)
+        LIVE.(e)
       when 4
-        die.(e)
+        DIE.(e)
       end
     end
   end
@@ -65,9 +62,9 @@ end
 comparison.of(method(:tdm), method(:if_else))
 
 # https://github.com/michaelherold/benchmark-memory
-#require 'benchmark/memory'
-#Benchmark.memory do |x|
-#  x.report('tdm') { tdm(array_generator.(5)) }
-#  x.report('if_else') { if_else(array_generator.(5)) }
-#  x.compare!
-#end
+require 'benchmark/memory'
+Benchmark.memory do |x|
+  x.report('tdm') { tdm(array_generator.(5)) }
+  x.report('if_else') { if_else(array_generator.(5)) }
+  x.compare!
+end
