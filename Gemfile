@@ -28,3 +28,5 @@ gem 'memory_profiler'
 gem 'pqueue'
 gem 'array_collapse'
 gem 'funkify'
+
+gem 'proc_compose'
