@@ -1,5 +1,14 @@
 source "https://rubygems.org"
 
+gem 'cztop'
+gem 'rbczmq'
+gem 'awsome_print'
+gem 'gnuplot'
+gem 'pry-doc'
+gem 'rubyvis'
+gem 'nyaplot'
+gem 'iruby'
+
 gem 'activesupport'
 
 gem 'minitest'
