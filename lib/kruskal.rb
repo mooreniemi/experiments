@@ -14,3 +14,19 @@ class UnionFind
   end
 end
 
+@edges_by_weight = File.read("./spec/support/edges.txt").
+  split("\n")[1..-1].
+  map {|line| line.split(" ").map(&:to_i) }.
+  sort_by(&:last)
+
+@mst = []
+@set = UnionFind.new(@edges_by_weight.count)
+@edges_by_weight.each do |edge|
+  unless @set.connected?(edge[0], edge[1])
+    @mst << edge
+    @set.union(edge[0], edge[1])
+  end
+end
+
+p "mst: #{@mst}"
+p "cost: #{@mst.reduce(0) {|acc, x| acc + x[2] } }"
