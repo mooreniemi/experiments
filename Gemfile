@@ -2,8 +2,7 @@ source "https://rubygems.org"
 
 gem 'cztop'
 gem 'rbczmq'
-gem 'awsome_print'
-gem 'gnuplot'
+gem 'awesome_print'
 gem 'pry-doc'
 gem 'rubyvis'
 gem 'nyaplot'
