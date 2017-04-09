@@ -43,12 +43,12 @@ describe 'Given an array of integers, find the highest product you can get from 
   let(:special_case) { [999, -1000, 998, 997] }
 
   it 'passes special case while  attempt_one does not' do
-    expect( attempt_one(special_case)).to_not eq(994010994)
+    expect(attempt_one(special_case)).to_not eq(994010994)
     expect(answer(special_case)).to eq(994010994)
   end
 
   it 'returns 300 even when non-unique negatives are used' do
-    expect( attempt_one(array_one)).to eq(300)
+    expect(attempt_one(array_one)).to eq(300)
     expect(answer(array_one)).to eq(300)
   end
 end
