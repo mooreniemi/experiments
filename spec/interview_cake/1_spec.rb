@@ -36,11 +36,17 @@ end
 describe 'returns the best profit I could have made from 1 purchase and 1 sale of 1 Apple stock yesterday' do
   let(:stock_prices_yesterday) { [10, 7, 5, 8, 11, 9] }
   let(:down_all_day) { [10, 9, 8, 7, 6, 5] }
+  let(:up_all_day) { [10, 9, 8, 7, 6, 5].reverse }
 
   it 'buys low and sells high' do
     expect(get_max_profit(stock_prices_yesterday)).to eq(6)
   end
+
   it 'deals with a bad day' do
     expect(get_max_profit(down_all_day)).to eq(-1)
+  end
+
+  it 'deals with a good day' do
+    expect(get_max_profit(up_all_day)).to eq(5)
   end
 end
