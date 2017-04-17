@@ -41,3 +41,12 @@ describe 'product of other numbers' do
     expect(except_self2(arr)).to eq([84,12,28,21])
   end
 end
+
+require 'graph/function'
+Graph::Function.configure do |config|
+  config.terminal = 'gif'
+  config.output = File.expand_path('../comparing_ints.gif', __FILE__)
+  config.step = (0..1000).step(100).to_a # default value
+  config.trials = 10
+end
+Graph::Function::IntsComparison.of(method(:except_self), method(:except_self2))
