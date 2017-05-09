@@ -9,6 +9,7 @@ GEM
     ansi (1.5.0)
     array_collapse (0.0.2)
     ast (2.3.0)
+    awesome_print (1.7.0)
     benchmark-memory (0.1.1)
       memory_profiler (~> 0.9)
     bond (0.5.1)
@@ -54,6 +55,7 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     multi_json (1.12.1)
+    nyaplot (0.1.6)
     parser (2.3.3.1)
       ast (~> 2.2)
     powerpack (0.1.1)
@@ -66,10 +68,12 @@ GEM
     pry-byebug (3.4.2)
       byebug (~> 9.0)
       pry (~> 0.10)
+    pry-doc (0.10.0)
+      pry (~> 0.9)
+      yard (~> 0.9)
     rainbow (2.1.0)
     rake (12.0.0)
     rantly (1.0.0)
-    rbczmq (1.7.9)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -93,12 +97,14 @@ GEM
       rubocop (>= 0.42.0)
     ruby-prof (0.16.2)
     ruby-progressbar (1.8.1)
+    rubyvis (0.6.1)
     slop (3.6.0)
     stackprof (0.2.10)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unicode-display_width (1.1.2)
+    yard (0.9.8)
 
 PLATFORMS
   ruby
@@ -106,6 +112,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   array_collapse
+  awesome_print
   benchmark-memory
   cztop
   funkify
@@ -118,17 +125,19 @@ DEPENDENCIES
   minitest
   minitest-colorize
   minitest-reporters
+  nyaplot
   pqueue
   proc_compose
   pry
   pry-byebug
+  pry-doc
   rantly
-  rbczmq
   rspec
   rubocop
   rubocop-rspec
   ruby-prof
+  rubyvis
   stackprof
 
 BUNDLED WITH
-   1.14.3
+   1.14.6
