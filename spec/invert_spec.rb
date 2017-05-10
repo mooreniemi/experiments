@@ -35,7 +35,7 @@ end
 
 def invert2(root)
   return root if root.nil? || root.childless?
-  root.children.each(&method(:invert))
+  root.children.each(&method(:invert2))
   root.swap_children
 end
 
