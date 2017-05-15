@@ -37,16 +37,18 @@ def lis(array)
   cache = Array.new(array.size) { [] }
 
   array.each_with_index do |current_element, current_index|
-    0.upto(current_index - 1) do |previous_index|
-      greater_element = array[previous_index] < current_element
-      decreasing = cache[current_index].size < (cache[previous_index].size+1)
+    0.upto(current_index - 1) do |a_previous_index|
+      current_gt_a_previous = array[a_previous_index] < current_element
 
-      if greater_element && decreasing
-        cache[current_index] = cache[previous_index].dup
+      # NOTE: I haven't found the case where I need this yet?
+      # decreasing = cache[current_index].size < (cache[a_previous_index].size+1)
+
+      if current_gt_a_previous # && decreasing
+        cache[current_index] = cache[a_previous_index].dup
       end
     end
 
-    p cache
+    # p cache
     cache[current_index] << current_element
   end
 
@@ -81,13 +83,21 @@ describe 'find longest increasing subarray' do
     end
   end
   context 'needs DP' do
+    let(:leetcode_array) { [10, 9, 2, 5, 3, 7, 101, 18] }
+    let(:leetcode_array2) { [10, 9, 2, 5, 3, 7, 101, 18, 102] }
+    let(:descending) { [5, 4, 3, 2, 1] }
+    let(:ascending) { [1, 2, 3, 4, 5] }
     describe '#lis' do
-      it 'handles duplicates' do
-        #expect(lis(array_one)).to eq([1, 2])
-        #expect(lis(array_two)).to eq([0, 1, 2, 6])
+      it 'handles all the cases' do
+        expect(lis(array_one)).to eq([1, 2])
+        expect(lis(array_two)).to eq([0, 1, 2, 6])
         expect(lis(mit_array)).to eq([2, 4, 5])
         expect(lis(array_three)).to eq([0, 1, 2])
-        #expect(lis(array_with_duplicates)).to eq([1, 2])
+        expect(lis(array_with_duplicates)).to eq([1, 2])
+        expect(lis(leetcode_array)).to eq([2, 3, 7, 101])
+        expect(lis(leetcode_array2)).to eq([2, 3, 7, 18, 102])
+        expect(lis(descending)).to eq([5])
+        expect(lis(ascending)).to eq([1, 2, 3, 4, 5])
       end
     end
   end
