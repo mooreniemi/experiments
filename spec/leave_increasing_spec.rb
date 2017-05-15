@@ -40,10 +40,10 @@ def lis(array)
     0.upto(current_index - 1) do |a_previous_index|
       current_gt_a_previous = array[a_previous_index] < current_element
 
-      # NOTE: I haven't found the case where I need this yet?
-      # decreasing = cache[current_index].size < (cache[a_previous_index].size+1)
+      # NOTE: covers case leetcode_array3
+      decreasing = cache[current_index].size < (cache[a_previous_index].size+1)
 
-      if current_gt_a_previous # && decreasing
+      if current_gt_a_previous && decreasing
         cache[current_index] = cache[a_previous_index].dup
       end
     end
@@ -85,6 +85,7 @@ describe 'find longest increasing subarray' do
   context 'needs DP' do
     let(:leetcode_array) { [10, 9, 2, 5, 3, 7, 101, 18] }
     let(:leetcode_array2) { [10, 9, 2, 5, 3, 7, 101, 18, 102] }
+    let(:leetcode_array3) { [1,3,6,7,9,4,10,5,6] }
     let(:descending) { [5, 4, 3, 2, 1] }
     let(:ascending) { [1, 2, 3, 4, 5] }
     describe '#lis' do
@@ -96,6 +97,7 @@ describe 'find longest increasing subarray' do
         expect(lis(array_with_duplicates)).to eq([1, 2])
         expect(lis(leetcode_array)).to eq([2, 3, 7, 101])
         expect(lis(leetcode_array2)).to eq([2, 3, 7, 18, 102])
+        expect(lis(leetcode_array3)).to eq([1, 3, 6, 7, 9, 10])
         expect(lis(descending)).to eq([5])
         expect(lis(ascending)).to eq([1, 2, 3, 4, 5])
       end
