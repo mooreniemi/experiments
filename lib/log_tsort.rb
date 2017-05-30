@@ -1,5 +1,5 @@
 require 'tsort'
-class Hash
+class DependencyHash < Hash
   include TSort
   alias tsort_each_node each_key
   def tsort_each_child(node, &block)
@@ -20,7 +20,7 @@ end
 
 logfile = File.read('./spec/support/logfile.txt')
 tasks = logfile.split("\n").map { |e| e.split(",").map(&:to_i) }.
-        each_with_object({}) { |a,h| h[a.first] = Task.new(a[0], a[1]) }
+        each_with_object({}) { |a,h| h[a[0]] = Task.new(a[0], a[1]) }
 
 def path_from(node, nodes)
   return node if node.nil? || node.parents == EMPTY_SET
@@ -41,7 +41,7 @@ paths.each do |path|
   end
 end
 
-dependency_hash = tasks.each_with_object({}) do |(k,v), hash|
+dependency_hash = tasks.each_with_object(DependencyHash.new) do |(k,v), hash|
   hash[k] = v.parents.to_a
 end
 dependency_hash[nil] = []
