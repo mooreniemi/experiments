@@ -1,6 +1,13 @@
 experiments
 ===========
 
+req on ubuntu:
+
+```
+sudo apt-get install ruby-dev
+sudo apt-get install libtool-bin
+```
+
 Just where I goof around with various katas or exercises. Don't judge me too harshly here: I do these in my spare time to keep myself sharp, so they're not all very tidy. :)
 
 Most of the code actually just lives with its own spec in `/spec` dir.
