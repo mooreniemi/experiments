@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'pry'
+require 'awesome_print'
 
 # give us some debug info when running rspec
 ENV['TEST_ENV'] = 'true'
