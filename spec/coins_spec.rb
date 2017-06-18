@@ -8,7 +8,7 @@ def coins(denoms, target)
   denoms.each_with_index do |denom, i|
     denom.upto(target) do |j|
       p table
-      table[j] += table[j-denoms[i]]
+      table[j] += table[j-denom]
     end
   end
 
