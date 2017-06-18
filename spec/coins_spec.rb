@@ -5,7 +5,7 @@ def coins(denoms, target)
   # base case, 1 way to make 0
   table.unshift(1)
 
-  denoms.each_with_index do |denom, i|
+  denoms.each do |denom|
     denom.upto(target) do |j|
       p table
       table[j] += table[j-denom]
