@@ -1,29 +1,22 @@
-indexed_character_cycle = ->(string) { string.chars.cycle.with_index }
-
-get_matches = ->(source,substring) do
-  bag = indexed_character_cycle.(substring)
-  bag_end = substring.size - 1
-  source.chars.map do |char|
-    bag_char, bag_index = bag.next
-    if char == bag_char
-      if bag_index == bag_end
-        bag.rewind
-        true
-      end
+get_matches = ->(source, substring) do
+  search = (substring * source.length).chars
+  matched = 0
+  source.chars.each do |source_char|
+    target_char = search.shift
+    if source_char == target_char
+      matched += 1
     else
-      bag.rewind
-      nil
+      search.unshift(target_char)
     end
   end
+  matched
 end
 
 get_match_count = ->(source, substring) do
-  get_matches.(source, substring).compact.size
+  get_matches.(source, substring) / substring.size
 end
 
 get_max_sub = ->(source,substring) do
-  unused = source.chars - substring.chars
-  source = (source.chars - unused).join
   result = (1..Float::INFINITY).each_with_object(Hash.new(0)) do |multiplier, matches|
     match_count = get_match_count.(source, substring * multiplier)
     break matches if match_count == 0
@@ -32,10 +25,12 @@ get_max_sub = ->(source,substring) do
   result[result.keys.min]
 end
 
-p get_max_sub.("abcabcmeowabcab", "abc")
-p get_max_sub.("abcfaffbcmeowabcab", "abc")
-p get_max_sub.("abcabcmeowabcab", "ab")
-p get_max_sub.("abcabcmeowabcab", "a")
-p get_max_sub.("acbbe", "abc")
-p get_max_sub.("acbbe", "ab")
-p get_max_sub.("acbbe", "b")
+p "#{get_max_sub.("abcabcmeowabcab", "abc")} should be 3"
+p "#{get_max_sub.("abcfaffbcmeowabcab", "abc")} should be 3"
+p "#{get_max_sub.("abcabcmeowabcab", "ab")} should be 4"
+p "#{get_max_sub.("abcabcmeowabcab", "a")} should be 4"
+p "#{get_max_sub.("acbbe", "abc")} should be 0"
+p "#{get_max_sub.("acbbe", "ab")} should be 1"
+p "#{get_max_sub.("acbbe", "b")} should be 2"
+p "#{get_max_sub.("babab", "baab")} should be 1"
+p "#{get_max_sub.("babababababababababababababababababababababa", "baab")} should be 7"
