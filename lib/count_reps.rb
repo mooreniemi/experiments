@@ -1,5 +1,6 @@
 get_matches = ->(source, substring) do
-  search = (substring * source.length).chars
+  upper = (source.size / substring.size).ceil
+  search = (substring * upper).chars
   matched = 0
   source.chars.each do |source_char|
     target_char = search.shift
@@ -17,12 +18,12 @@ get_match_count = ->(source, substring) do
 end
 
 get_max_sub = ->(source,substring) do
-  result = (1..Float::INFINITY).each_with_object(Hash.new(0)) do |multiplier, matches|
+  result = (source.length / substring.length).downto(1).each_with_object(Hash.new(0)) do |multiplier, matches|
     match_count = get_match_count.(source, substring * multiplier)
-    break matches if match_count == 0
     matches[match_count] = multiplier
+    break matches if match_count == 1
   end
-  result[result.keys.min]
+  result[1]
 end
 
 p "#{get_max_sub.("abcabcmeowabcab", "abc")} should be 3"
@@ -34,3 +35,4 @@ p "#{get_max_sub.("acbbe", "ab")} should be 1"
 p "#{get_max_sub.("acbbe", "b")} should be 2"
 p "#{get_max_sub.("babab", "baab")} should be 1"
 p "#{get_max_sub.("babababababababababababababababababababababa", "baab")} should be 7"
+p get_max_sub.("lovelive" * 1000, "lovelive" * 999)
