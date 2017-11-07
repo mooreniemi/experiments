@@ -1,73 +1,62 @@
 # wrong: https://www.sitepoint.com/heap-data-structure-ruby/
 # wrong: https://gist.github.com/aspyct/3428688
+# correct: http://www.brianstorti.com/implementing-a-priority-queue-in-ruby/
 # canonical: https://en.wikipedia.org/wiki/Binary_heap
 class BinaryMaxHeap
-  attr_accessor :array_representation
+  attr_accessor :elements
 
-  CHILD = ->(offset,i) { 2*i + offset }.curry
-  PARENT = ->(i) { (i-1 / 2).floor }
-
-  def initialize(elements = [])
-    fail unless elements.is_a? Array
-    @array_representation = elements
-    reheap
+  def initialize(array = [])
+    @elements = []
+    array.each {|e| self << e }
   end
 
   def <<(element)
-    @array_representation.unshift(element).tap { reheap }
-  end
-
-  def peek_max
-    array_representation.first
-  end
-
-  def pop_max
-    array_representation.shift.tap { reheap }
-  end
-
-  private
-  def reheap
-    array_representation.each_with_index {|_,i| heapify(i) }
+    elements << element
+    bubble_up(elements.size - 1)
     self
   end
 
-  def heapify(i)
-    p "sinking element #{array_representation[i]}"
-    return if leaf_node?(i) || satisfied?(i)
-
-    larger_child = left_child(i) > right_child(i) ? left_child_index(i) : right_child_index(i)
-
-    array_representation[i], array_representation[larger_child] = array_representation[larger_child], array_representation[i]
-
-    heapify(larger_child)
+  def pop
+    swap(0, elements.size - 1)
+    elements.pop.tap { bubble_down(0) }
   end
 
-  def satisfied?(i)
-    e = array_representation[i]
-    e >= left_child(i) && e >= right_child_index(i)
+  private
+  def bubble_up(i)
+    parent_index = (i / 2).floor
+
+    return if i <= 0
+    return if elements[parent_index] >= elements[i]
+
+    swap(i, parent_index)
+
+    bubble_up(parent_index)
   end
 
-  def leaf_node?(i)
-    i >= array_representation.size/2
+  def bubble_down(i)
+    child_index = (i * 2)
+
+    return if child_index > elements.size - 1
+
+    not_the_last_element = child_index < elements.size - 1
+
+    left_element = elements[child_index + 1]
+    right_element = elements[child_index + 2]
+
+    child_index += 1 if not_the_last_element && right_element > left_element
+
+    return if elements[i] > elements[child_index]
+
+    swap(i, child_index)
   end
 
-  def left_child(i)
-    array_representation[left_child_index(i)] || -Float::INFINITY
-  end
-  def right_child(i)
-    array_representation[right_child_index(i)] || -Float::INFINITY
-  end
-
-  def left_child_index(i)
-    CHILD.(1).(i)
-  end
-  def right_child_index(i)
-    CHILD.(2).(i)
+  def swap(source, target)
+    elements[source], elements[target] = elements[target], elements[source]
   end
 end
 
-a = [10, 4, 8, 2, 1, 7].shuffle
-p "heapifying #{a}, exported as @heap"
+(array = [10, 4, 8, 2, 1, 7]).permutation.each do |a|
+  fail unless BinaryMaxHeap.new(a).pop == 10
+end
 
-@heap = BinaryMaxHeap.new(a)
-p "#{@heap.peek_max} should be #{a.max}"
+puts "Tested all permutations of #{array} successfully."
