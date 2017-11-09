@@ -33,6 +33,7 @@ gem 'gnuplot'
 gem 'benchmark-memory'
 gem 'memory_profiler'
 
+gem 'binary_search_tree'
 gem 'pqueue'
 gem 'array_collapse'
 gem 'funkify'
