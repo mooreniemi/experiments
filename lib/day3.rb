@@ -52,7 +52,7 @@ get_spiral_coords_of = ->(t) do
   highest_so_far = 0
   spiral_level = 0
   built_string = ""
-  until highest_so_far > t
+  until highest_so_far >= t
     built_string += spiral.(spiral_level)
     built_spiral = str_to_coords.(built_string)
     highest_so_far = built_spiral.size
