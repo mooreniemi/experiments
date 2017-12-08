@@ -46,4 +46,30 @@ end
 p str_to_coords.(one + two + three) == str_to_coords.(spiral.(0) + spiral.(1) + spiral.(2))
 
 # location number => coordinates (with [0,0] at center which is 1)
-p str_to_coords.(spiral.(0)).each_with_object({}).with_index {|(e,h), i| h[i + 1] = e }
+as_location_mapping = ->(coords) { coords.each_with_object({}).with_index {|(e,h), i| h[i + 1] = e } }
+
+p as_location_mapping.(str_to_coords.(spiral.(0)))
+
+# ok but how do we reach our target?
+target = 361527
+
+get_spiral_coords_of = ->(t) do
+  highest_so_far = 0
+  spiral_level = 0
+  built_string = ""
+  until highest_so_far > t
+    built_string += spiral.(spiral_level)
+    built_spiral = str_to_coords.(built_string)
+    highest_so_far = built_spiral.size
+    spiral_level += 1
+  end
+  as_location_mapping.(built_spiral)[t]
+end
+
+puts "\nspiral coords:"
+# p get_spiral_coords_of.(9)
+# p get_spiral_coords_of.(10)
+# p get_spiral_coords_of.(25)
+# p get_spiral_coords_of.(27)
+p get_spiral_coords_of.(27)
+p get_spiral_coords_of.(target)
