@@ -45,11 +45,6 @@ end
 # p str_to_coords.(one + two)
 p str_to_coords.(one + two + three) == str_to_coords.(spiral.(0) + spiral.(1) + spiral.(2))
 
-# location number => coordinates (with [0,0] at center which is 1)
-as_location_mapping = ->(coords) { coords.each_with_object({}).with_index {|(e,h), i| h[i + 1] = e } }
-
-p as_location_mapping.(str_to_coords.(spiral.(0)))
-
 # ok but how do we reach our target?
 target = 361527
 
@@ -63,13 +58,22 @@ get_spiral_coords_of = ->(t) do
     highest_so_far = built_spiral.size
     spiral_level += 1
   end
-  as_location_mapping.(built_spiral)[t]
+  built_spiral[t - 1]
 end
 
-puts "\nspiral coords:"
 # p get_spiral_coords_of.(9)
 # p get_spiral_coords_of.(10)
 # p get_spiral_coords_of.(25)
 # p get_spiral_coords_of.(27)
-p get_spiral_coords_of.(27)
-p get_spiral_coords_of.(target)
+spiral_coords = get_spiral_coords_of.(target)
+p spiral_coords
+
+# we need the manhattan distance of the coordinates
+manhattan_distance = ->(coords) { coords[0].abs + coords[1].abs }
+
+p manhattan_distance.(spiral_coords)
+
+# location number => coordinates (with [0,0] at center which is 1)
+as_location_mapping = ->(coords) { coords.each_with_object({}).with_index {|(e,h), i| h[i + 1] = e } }
+
+p as_location_mapping.(str_to_coords.(spiral.(0)))
