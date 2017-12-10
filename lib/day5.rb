@@ -3,7 +3,7 @@ def jumper(ins,i,j,step)
   j = ins[i]
   return step if j.nil?
 
-  ins[i] += 1
+  ins[i] >= 3 ? ins[i] -= 1 : ins[i] += 1
   i = i + j
 
   step += 1
