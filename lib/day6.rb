@@ -20,12 +20,12 @@ end
 count_loops = ->(a) do
   a = @cycle.(a)
   memo = { a.dup => 1 }
-  seen = 0
+  seen = false
   loops = 1
-  until seen == 1
+  until seen
     a = @cycle.(a)
     loops += 1
-    memo[a].nil? ? memo[a.dup] = 1 : seen += 1
+    memo[a].nil? ? memo[a.dup] = 1 : seen = true
   end
   loops
 end
