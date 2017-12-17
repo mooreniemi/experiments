@@ -35,7 +35,8 @@ gem 'memory_profiler'
 
 gem 'binary_search_tree'
 gem 'pqueue'
-gem 'array_collapse'
+gem 'bitarray'
 gem 'funkify'
 
+gem 'array_collapse'
 gem 'proc_compose'

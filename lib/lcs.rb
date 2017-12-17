@@ -36,6 +36,8 @@ a permutation.
 
 For generation of all Subsequences:
 http://www.geeksforgeeks.org/print-subsequences-string/
+
+Compare also to powerset.rb, which is much simpler.
 =end
 
 require 'set'

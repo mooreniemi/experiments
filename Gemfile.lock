@@ -13,6 +13,7 @@ GEM
     benchmark-memory (0.1.1)
       memory_profiler (~> 0.9)
     binary_search_tree (2.2)
+    bitarray (1.0.0)
     bond (0.5.1)
     builder (3.2.2)
     byebug (9.0.6)
@@ -116,6 +117,7 @@ DEPENDENCIES
   awesome_print
   benchmark-memory
   binary_search_tree
+  bitarray
   cztop
   funkify
   gnuplot
